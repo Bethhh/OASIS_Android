@@ -179,7 +179,7 @@ public class CameraActivity extends Activity {
                 JSONObject jsonObject = new JSONObject();
                 //jsonObject.accumulate("client_id", API_KEY);
                 jsonObject.accumulate("type", "base64");
-                jsonObject.accumulate("image", URLEncoder.encode(encodedImage, "UTF-8"));
+                jsonObject.accumulate("image", encodedImage);//URLEncoder.encode(encodedImage, "UTF-8"));
 
 
                 String json = jsonObject.toString(); // Output to string
@@ -190,6 +190,8 @@ public class CameraActivity extends Activity {
                 httpPost.setEntity(se);
 
                 httpPost.setHeader("Authorization", "Client-ID " +API_KEY);
+                httpPost.setHeader("Accept", "application/json");
+                httpPost.setHeader("Content-type", "application/json");
 
                 final HttpResponse response = httpClient.execute(httpPost,
                         localContext);
