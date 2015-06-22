@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.hardware.Camera;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -17,12 +18,29 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.protocol.BasicHttpContext;
+import org.apache.http.protocol.HttpContext;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -32,6 +50,12 @@ public class CameraActivity extends Activity {
     private Camera mCamera;
     private CameraPreview mPreview;
     private static final String TAG = "Camera";
+    double latitude;
+    double longitude;
+    URL img;
+    private String API_KEY =  "271a72b8dd082c6";
+    ProgressBar progressBar;
+    String encodedImage = "";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,6 +71,9 @@ public class CameraActivity extends Activity {
         FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview);
         preview.addView(mPreview);
 
+        progressBar = (ProgressBar) findViewById(R.id.progressBar4);
+        progressBar.setVisibility(View.INVISIBLE);
+
 
         // Add a listener to the Capture button
         Button captureButton = (Button) findViewById(R.id.button_capture);
@@ -56,6 +83,13 @@ public class CameraActivity extends Activity {
                     public void onClick(View v) {
                         // get an image from the camera
                         mCamera.takePicture(null, null, mPicture);
+                        GPSTracker tracker = new GPSTracker(CameraActivity.this);
+                        if (tracker.canGetLocation() == false) {
+                            tracker.showSettingsAlert();
+                        } else {
+                            latitude = tracker.getLatitude();
+                            longitude = tracker.getLongitude();
+                        }
                     }
                 }
         );
@@ -65,36 +99,132 @@ public class CameraActivity extends Activity {
 
         @Override
         public void onPictureTaken(byte[] data, Camera camera) {
-            prepareData(data);
+            uploadImage(data);
         }
     };
 
-    private void prepareData(byte[] data) {
+    private void uploadImage(byte[] data) {
 
-        // Resize photo from camera byte array
-        /*Bitmap photoImage = BitmapFactory.decodeByteArray(data, 0, data.length);
-        Bitmap photoImageScaled = Bitmap.createScaledBitmap(photoImage, 600, 600
-                * photoImage.getHeight() / photoImage.getWidth(), false);
 
-        // Override Android default landscape orientation and save portrait
-        Matrix matrix = new Matrix();
-        matrix.postRotate(90);
-        Bitmap rotatedScaledPhotoImage = Bitmap.createBitmap(photoImageScaled, 0,
-                0, photoImageScaled.getWidth(), photoImageScaled.getHeight(),
-                matrix, true);
+        encodedImage = Base64.encodeToString(data, Base64.DEFAULT);
+        Log.d(TAG, encodedImage);
 
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        //Bitmap rotatedScaledPhotoImage;
-        rotatedScaledPhotoImage.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+        //URL to imgur
 
-        byte[] scaledData = bos.toByteArray();*/
+        new UploadImgur().execute();
+    }
 
-        String encodedImage = Base64.encodeToString(data, Base64.DEFAULT);
+    class UploadImgur extends AsyncTask<Void, Void, URL> {
+        protected void onPreExecute(){
+            progressBar.setVisibility(View.VISIBLE);
+            super.onPreExecute();
+        }
+
+        @Override
+        protected URL doInBackground(Void... params){
+            //Bitmap bitmap = image;
+
+            // Creates Byte Array from picture
+            //ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            //bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos); // Not sure whether this should      be jpeg or png, try both and see which works best
+            URL url = null;
+            URL ret = null;
+            /*try{
+                url = new URL("http://api.imgur.com/3/upload");
+            } catch(MalformedURLException e){
+                Log.d(TAG, "Error Malformed: " + e.getMessage());
+            }
+            //encodes picture with Base64 and inserts api key
+
+            String urldata = "";
+
+            try {
+                urldata = URLEncoder.encode("image", "UTF-8") + "=" + URLEncoder.encode(encodedImage.toString(), "UTF-8");
+                urldata += "&" + URLEncoder.encode("key", "UTF-8") + "=" + URLEncoder.encode(API_KEY, "UTF-8");
+            }catch(UnsupportedEncodingException e){
+                Log.d(TAG, "Error encoding: " + e.getMessage());
+            }
+
+            // opens connection and sends data
+            URLConnection conn;
+            try {
+                if(url != null) {
+                    conn = url.openConnection();
+                    conn.setDoOutput(true);
+                    OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+                    wr.write(urldata);
+                    wr.flush();
+                }
+            }catch(IOException e){
+                Log.d(TAG, "Error open url connection: " + e.getMessage());
+            }*/
+
+            final String upload_to = "https://api.imgur.com/3/upload.json";
+            HttpClient httpClient = new DefaultHttpClient();
+            HttpContext localContext = new BasicHttpContext();
+            HttpPost httpPost = new HttpPost(upload_to);
+
+            try {
+                //final MultipartEntity entity = new MultipartEntity(
+                  //      HttpMultipartMode.BROWSER_COMPATIBLE);
+                /*String urldata="" ;
+                try {
+                    urldata = URLEncoder.encode("image", "UTF-8") + "=" + URLEncoder.encode(encodedImage.toString(), "UTF-8");
+                    urldata += "&" + URLEncoder.encode("Client-ID", "UTF-8") + "=" + URLEncoder.encode(API_KEY, "UTF-8");
+                }catch(UnsupportedEncodingException e){
+                    Log.d(TAG, "Error encoding: " + e.getMessage());
+                }
+*/
+
+                JSONObject jsonObject = new JSONObject();
+                //jsonObject.accumulate("client_id", API_KEY);
+                jsonObject.accumulate("type", "base64");
+                jsonObject.accumulate("image", URLEncoder.encode(encodedImage, "UTF-8"));
+
+
+                String json = jsonObject.toString(); // Output to string
+                Log.d(TAG, json);
+
+                StringEntity se = new StringEntity(json);
+                // put json string into server
+                httpPost.setEntity(se);
+
+                httpPost.setHeader("Authorization", "Client-ID " +API_KEY);
+
+                final HttpResponse response = httpClient.execute(httpPost,
+                        localContext);
+
+                final String response_string = EntityUtils.toString(response
+                        .getEntity());
+
+                jsonObject = new JSONObject(response_string);
+
+                Log.d("JSON", jsonObject.toString()); //for my own understanding
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return ret;
+        }
+
+        protected void onPostExecute(URL url){
+            progressBar.setVisibility(View.INVISIBLE);
+            img = url;
+            prepareData();
+        }
+    }
+
+    private void prepareData(){
 
         //time stamp
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        //Location and value ...
 
+        //value ...
+        //latitude, longitude;
+        //Url
+
+        //Submit
     }
 
     /** Check if this device has a camera */
