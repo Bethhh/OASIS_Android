@@ -52,7 +52,7 @@ public class CameraActivity extends Activity {
     private static final String TAG = "Camera";
     double latitude;
     double longitude;
-    URL img;
+    String img;
     private String API_KEY =  "271a72b8dd082c6";
     ProgressBar progressBar;
     String encodedImage = "";
@@ -114,21 +114,21 @@ public class CameraActivity extends Activity {
         new UploadImgur().execute();
     }
 
-    class UploadImgur extends AsyncTask<Void, Void, URL> {
+    class UploadImgur extends AsyncTask<Void, Void, Integer> {
         protected void onPreExecute(){
             progressBar.setVisibility(View.VISIBLE);
             super.onPreExecute();
         }
 
         @Override
-        protected URL doInBackground(Void... params){
+        protected Integer doInBackground(Void... params){
             //Bitmap bitmap = image;
 
             // Creates Byte Array from picture
             //ByteArrayOutputStream baos = new ByteArrayOutputStream();
             //bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos); // Not sure whether this should      be jpeg or png, try both and see which works best
-            URL url = null;
-            URL ret = null;
+
+            String ret = "";
             /*try{
                 url = new URL("http://api.imgur.com/3/upload");
             } catch(MalformedURLException e){
@@ -200,33 +200,87 @@ public class CameraActivity extends Activity {
                         .getEntity());
 
                 jsonObject = new JSONObject(response_string);
+                jsonObject = jsonObject.getJSONObject("data");
 
-                Log.d("JSON", jsonObject.toString()); //for my own understanding
+                Log.d("JSON", jsonObject.getString("link").toString()); //for my own understanding
+                ret = jsonObject.getString("link").toString();
+                //return ret;
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
-            return ret;
+            //return ret;
+            return prepareAndSendData(ret);
         }
 
-        protected void onPostExecute(URL url){
+        protected void onPostExecute(Integer status){
             progressBar.setVisibility(View.INVISIBLE);
-            img = url;
-            prepareData();
+            //Do somehting with status
+
         }
     }
 
-    private void prepareData(){
-
+    private Integer prepareAndSendData(String url){
+        Integer status;
         //time stamp
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
 
-        //value ...
-        //latitude, longitude;
-        //Url
+        final String upload_to = "https://distributed-health.herokuapp.com/distributed_healths/new";
+        HttpClient httpClient = new DefaultHttpClient();
+        HttpContext localContext = new BasicHttpContext();
+        HttpPost httpPost = new HttpPost(upload_to);
 
-        //Submit
+        try {
+            //final MultipartEntity entity = new MultipartEntity(
+            //      HttpMultipartMode.BROWSER_COMPATIBLE);
+                /*String urldata="" ;
+                try {
+                    urldata = URLEncoder.encode("image", "UTF-8") + "=" + URLEncoder.encode(encodedImage.toString(), "UTF-8");
+                    urldata += "&" + URLEncoder.encode("Client-ID", "UTF-8") + "=" + URLEncoder.encode(API_KEY, "UTF-8");
+                }catch(UnsupportedEncodingException e){
+                    Log.d(TAG, "Error encoding: " + e.getMessage());
+                }
+*/
+
+            JSONObject jsonObject = new JSONObject();
+            //jsonObject.accumulate("client_id", API_KEY);
+            jsonObject.accumulate("ph", 2);
+            jsonObject.accumulate("magnified_Link", url);//URLEncoder.encode(encodedImage, "UTF-8"));
+            jsonObject.accumulate("lat", latitude);
+            jsonObject.accumulate("long", longitude);
+            jsonObject.accumulate("timestamp", timeStamp);
+
+            String json = jsonObject.toString(); // Output to string
+            Log.d(TAG, json);
+
+            StringEntity se = new StringEntity(json);
+            // put json string into server
+            httpPost.setEntity(se);
+
+            //httpPost.setHeader("Authorization", "Client-ID " +API_KEY);
+            httpPost.setHeader("Accept", "application/json");
+            httpPost.setHeader("Content-type", "application/json");
+
+            final HttpResponse response = httpClient.execute(httpPost,
+                    localContext);
+
+            final String response_string = EntityUtils.toString(response
+                    .getEntity());
+
+            jsonObject = new JSONObject(response_string);
+            //jsonObject = jsonObject.getJSONObject("data");
+
+            Log.d("JSON", jsonObject.toString()); //for my own understanding
+            //ret = new URL(jsonObject.getString("link").toString());
+            //return ret;
+            status = response.getStatusLine().getStatusCode();
+            return status;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     /** Check if this device has a camera */
