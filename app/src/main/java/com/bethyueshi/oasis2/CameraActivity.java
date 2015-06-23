@@ -53,7 +53,7 @@ public class CameraActivity extends Activity {
     double latitude;
     double longitude;
     String img;
-    private String API_KEY =  "271a72b8dd082c6";
+
     ProgressBar progressBar;
     String encodedImage = "";
 
@@ -111,110 +111,12 @@ public class CameraActivity extends Activity {
 
         //URL to imgur
 
-        new UploadImgur().execute();
+        new UploadImgur(progressBar, encodedImage, latitude, longitude).execute();
     }
 
-    class UploadImgur extends AsyncTask<Void, Void, Integer> {
-        protected void onPreExecute(){
-            progressBar.setVisibility(View.VISIBLE);
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Integer doInBackground(Void... params){
-
-            String ret = "";
-
-            final String upload_to = "https://api.imgur.com/3/upload.json";
-            HttpClient httpClient = new DefaultHttpClient();
-            HttpContext localContext = new BasicHttpContext();
-            HttpPost httpPost = new HttpPost(upload_to);
-
-            try {
-                JSONObject jsonObject = new JSONObject();
-                jsonObject.accumulate("type", "base64");
-                jsonObject.accumulate("image", encodedImage);
 
 
-                String json = jsonObject.toString();
-                Log.d(TAG, json); //json sent
 
-                StringEntity se = new StringEntity(json);
-                httpPost.setEntity(se);
-
-                httpPost.setHeader("Authorization", "Client-ID " +API_KEY);
-                httpPost.setHeader("Accept", "application/json");
-                httpPost.setHeader("Content-type", "application/json");
-
-                final HttpResponse response = httpClient.execute(httpPost,
-                        localContext);
-
-                final String response_string = EntityUtils.toString(response
-                        .getEntity());
-
-                jsonObject = new JSONObject(response_string);
-                jsonObject = jsonObject.getJSONObject("data");
-
-                Log.d("JSON", jsonObject.getString("link").toString()); //for my own understanding
-                ret = jsonObject.getString("link").toString();
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            return prepareAndSendData(ret);
-        }
-
-        protected void onPostExecute(Integer status){
-            progressBar.setVisibility(View.INVISIBLE);
-            //Do somehting with status
-        }
-    }
-
-    private Integer prepareAndSendData(String url){
-        Integer status;
-        //time stamp
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-
-        final String submit_to = "https://distributed-health.herokuapp.com/distributed_healths.json";
-        HttpClient httpClient = new DefaultHttpClient();
-        HttpContext localContext = new BasicHttpContext();
-        HttpPost httpPost = new HttpPost(submit_to);
-
-        try {
-
-            JSONObject jsonObject = new JSONObject();
-
-            jsonObject.accumulate("ph", 2);
-            jsonObject.accumulate("magnified_Link", url);
-            jsonObject.accumulate("lat", latitude);
-            jsonObject.accumulate("long", longitude);
-            //jsonObject.accumulate("timestamp", timeStamp);
-
-            String json = jsonObject.toString();
-            //json = "{\"id\":{\"$oid\":\"5588d50e6437320003000000\"},\"ph\":32.0,\"chlorine\":3.0,\"magnified_Link\":\"http://fdasfasf.com\",\"taste\":\"3\",\"odor\":\"4\",\"temperature\":4.0,\"mercury\":4.0,\"hardness\":4.0,\"lat\":4.0,\"long\":4.0,\"url\":\"https://distributed-health.herokuapp.com/distributed_healths/5588d50e6437320003000000.json\"}";
-            Log.d(TAG, json);  //json sent
-
-            StringEntity se = new StringEntity(json);
-            httpPost.setEntity(se);
-
-            httpPost.setHeader("Accept", "application/json");
-            httpPost.setHeader("Content-type", "application/json");
-
-            final HttpResponse response = httpClient.execute(httpPost, localContext);
-            final String response_string = EntityUtils.toString(response.getEntity());
-            jsonObject = new JSONObject(response_string);
-
-            Log.d("JSON", jsonObject.toString()); //Response (json)
-
-            status = response.getStatusLine().getStatusCode();
-            return status;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
 
     /** Check if this device has a camera */
     private boolean checkCameraHardware(Context context) {
@@ -226,6 +128,7 @@ public class CameraActivity extends Activity {
             return false;
         }
     }
+
     private void releaseCameraAndPreview() {
         //mPreview.setCamera(null);
         if (mCamera != null) {
