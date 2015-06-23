@@ -226,7 +226,7 @@ public class CameraActivity extends Activity {
         //time stamp
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
 
-        final String upload_to = "https://distributed-health.herokuapp.com/distributed_healths/new";
+        final String upload_to = "https://distributed-health.herokuapp.com/distributed_healths.json";
         HttpClient httpClient = new DefaultHttpClient();
         HttpContext localContext = new BasicHttpContext();
         HttpPost httpPost = new HttpPost(upload_to);
@@ -249,9 +249,10 @@ public class CameraActivity extends Activity {
             jsonObject.accumulate("magnified_Link", url);//URLEncoder.encode(encodedImage, "UTF-8"));
             jsonObject.accumulate("lat", latitude);
             jsonObject.accumulate("long", longitude);
-            jsonObject.accumulate("timestamp", timeStamp);
+            //jsonObject.accumulate("timestamp", timeStamp);
 
             String json = jsonObject.toString(); // Output to string
+            //json = "{\"id\":{\"$oid\":\"5588d50e6437320003000000\"},\"ph\":32.0,\"chlorine\":3.0,\"magnified_Link\":\"http://fdasfasf.com\",\"taste\":\"3\",\"odor\":\"4\",\"temperature\":4.0,\"mercury\":4.0,\"hardness\":4.0,\"lat\":4.0,\"long\":4.0,\"url\":\"https://distributed-health.herokuapp.com/distributed_healths/5588d50e6437320003000000.json\"}";
             Log.d(TAG, json);
 
             StringEntity se = new StringEntity(json);
