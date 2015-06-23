@@ -224,9 +224,9 @@ public class CameraActivity extends Activity {
     private Integer prepareAndSendData(String url){
         Integer status;
         //time stamp
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()); //not being used at the moment
 
-        final String upload_to = "https://distributed-health.herokuapp.com/distributed_healths/new";
+        final String upload_to = "https://distributed-health.herokuapp.com/distributed_healths.json";
         HttpClient httpClient = new DefaultHttpClient();
         HttpContext localContext = new BasicHttpContext();
         HttpPost httpPost = new HttpPost(upload_to);
@@ -245,11 +245,16 @@ public class CameraActivity extends Activity {
 
             JSONObject jsonObject = new JSONObject();
             //jsonObject.accumulate("client_id", API_KEY);
-            jsonObject.accumulate("ph", 2);
-            jsonObject.accumulate("magnified_Link", url);//URLEncoder.encode(encodedImage, "UTF-8"));
-            jsonObject.accumulate("lat", latitude);
-            jsonObject.accumulate("long", longitude);
-            jsonObject.accumulate("timestamp", timeStamp);
+            jsonObject.put("ph", 2);
+            jsonObject.put("chlorine", 2.0);
+            jsonObject.put("magnified_Link", url);//URLEncoder.encode(encodedImage, "UTF-8"));
+            jsonObject.put("taste", "yucky");
+            jsonObject.put("odor", "smelly");
+            jsonObject.put("temperature", "77.0");
+            jsonObject.put("mercury", 234);
+            jsonObject.put("hardness", 9.0);
+            jsonObject.put("lat", latitude);
+            jsonObject.put("long", longitude);
 
             String json = jsonObject.toString(); // Output to string
             Log.d(TAG, json);
