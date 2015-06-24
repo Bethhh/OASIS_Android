@@ -53,6 +53,7 @@ public class CameraActivity extends Activity {
     double latitude;
     double longitude;
     String img;
+    String timeStamp;
 
     ProgressBar progressBar;
     String encodedImage = "";
@@ -83,6 +84,7 @@ public class CameraActivity extends Activity {
                     public void onClick(View v) {
                         // get an image from the camera
                         mCamera.takePicture(null, null, mPicture);
+                        timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
                         GPSTracker tracker = new GPSTracker(CameraActivity.this);
                         if (tracker.canGetLocation() == false) {
                             tracker.showSettingsAlert();
@@ -111,7 +113,16 @@ public class CameraActivity extends Activity {
 
         //URL to imgur
 
-        new UploadImgur(progressBar, encodedImage, latitude, longitude).execute();
+        //new UploadImgur(progressBar, encodedImage, latitude, longitude).execute();
+
+        //Start Select Test
+        Intent intent = new Intent(CameraActivity.this, SelectTest.class);
+
+        intent.putExtra("lat", latitude);
+        intent.putExtra("lng", longitude);
+        intent.putExtra("ts", timeStamp);
+
+        startActivity(intent);
     }
 
 
