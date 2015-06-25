@@ -53,8 +53,9 @@ public class CameraActivity extends Activity {
     double latitude;
     double longitude;
     String img;
+    String timeStamp;
 
-    ProgressBar progressBar;
+   // ProgressBar progressBar;
     String encodedImage = "";
 
     @Override
@@ -71,8 +72,7 @@ public class CameraActivity extends Activity {
         FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview);
         preview.addView(mPreview);
 
-        progressBar = (ProgressBar) findViewById(R.id.progressBar4);
-        progressBar.setVisibility(View.INVISIBLE);
+
 
 
         // Add a listener to the Capture button
@@ -83,6 +83,7 @@ public class CameraActivity extends Activity {
                     public void onClick(View v) {
                         // get an image from the camera
                         mCamera.takePicture(null, null, mPicture);
+                        timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
                         GPSTracker tracker = new GPSTracker(CameraActivity.this);
                         if (tracker.canGetLocation() == false) {
                             tracker.showSettingsAlert();
@@ -99,19 +100,30 @@ public class CameraActivity extends Activity {
 
         @Override
         public void onPictureTaken(byte[] data, Camera camera) {
-            uploadImage(data);
+            //uploadImage(data);
+            chooseTest(data);
         }
     };
 
-    private void uploadImage(byte[] data) {
-
+    //private void uploadImage(byte[] data) {
+    private void chooseTest(byte[] data){
 
         encodedImage = Base64.encodeToString(data, Base64.DEFAULT);
         Log.d(TAG, encodedImage);
 
         //URL to imgur
 
-        new UploadImgur(progressBar, encodedImage, latitude, longitude).execute();
+        //new UploadImgur(progressBar, encodedImage, latitude, longitude).execute();
+
+        //Start Select Test
+        Intent intent = new Intent(CameraActivity.this, SelectTest.class);
+
+        intent.putExtra("lat", latitude);
+        intent.putExtra("lng", longitude);
+        intent.putExtra("ts", timeStamp);
+        intent.putExtra("img", encodedImage);
+
+        startActivity(intent);
     }
     
 

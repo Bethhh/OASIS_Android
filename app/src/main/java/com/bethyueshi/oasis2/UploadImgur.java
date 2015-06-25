@@ -43,6 +43,7 @@ class UploadImgur extends AsyncTask<Void, Void, Integer> {
     @Override
     protected Integer doInBackground(Void... params){
 
+        Integer status;
         String ret = "";
 
         final String upload_to = "https://api.imgur.com/3/upload.json";
@@ -78,10 +79,15 @@ class UploadImgur extends AsyncTask<Void, Void, Integer> {
             Log.d("JSON", jsonObject.getString("link").toString()); //for my own understanding
             ret = jsonObject.getString("link").toString();
 
+            //status = response.getStatusLine().getStatusCode();
+            //return status;
+
         } catch (Exception e) {
             e.printStackTrace();
+            //return null;
         }
 
+        //need to notify the main activity the url TODO
         return prepareAndSendData(ret);
     }
 
@@ -93,7 +99,7 @@ class UploadImgur extends AsyncTask<Void, Void, Integer> {
     private Integer prepareAndSendData(String url){
         Integer status;
         //time stamp
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        //String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
 
         final String submit_to = "https://distributed-health.herokuapp.com/distributed_healths.json";
         HttpClient httpClient = new DefaultHttpClient();
