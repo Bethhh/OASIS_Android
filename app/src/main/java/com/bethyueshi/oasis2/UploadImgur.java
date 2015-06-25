@@ -28,12 +28,14 @@ class UploadImgur extends AsyncTask<Void, Void, Integer> {
     private static final String API_KEY =  "271a72b8dd082c6";
     private double latitude;
     private double longitude;
+    private String timestamp;
 
-    public UploadImgur(ProgressBar pb, String data, double lat, double lng){
+    public UploadImgur(ProgressBar pb, String data, double lat, double lng, String ts){
         this.progressBar = pb;
         this.encodedImage = data;
         this.latitude = lat;
         this.longitude = lng;
+        this.timestamp = ts;
     }
     protected void onPreExecute(){
         progressBar.setVisibility(View.VISIBLE);
@@ -120,6 +122,8 @@ class UploadImgur extends AsyncTask<Void, Void, Integer> {
             jsonObject.put("hardness", 9.0);
             jsonObject.put("lat", latitude);
             jsonObject.put("long", longitude);
+            jsonObject.put("timestamp", timestamp);
+            jsonObject.put("testdata", true);
             //jsonObject.accumulate("timestamp", timeStamp);
 
             String json = jsonObject.toString();

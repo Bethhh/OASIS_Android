@@ -106,7 +106,7 @@ public class SelectTest extends Activity {
                         "Click ListItem Number " + position, Toast.LENGTH_LONG)
                 .show();*/
                 //need to add pop up first
-                new UploadImgur(progressBar, img, latitude, longitude).execute();
+                new UploadImgur(progressBar, img, latitude, longitude, timeStamp).execute();
 
                 /*Intent intent = new Intent(ViewAlbumActivity.this, PicturesActivity.class);
                 //Convert to byte array
