@@ -15,9 +15,6 @@ import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 /**
  * Created by bethyueshi on 6/22/15.
  * Upload to imgur and submit to database

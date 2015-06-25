@@ -3,20 +3,16 @@ package com.bethyueshi.oasis2;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,7 +73,7 @@ public class SelectTest extends Activity {
                 //get the reference to the EditText of your row.
                 //find the item with row.findViewById()
                 TextView testNameField = (TextView)row.findViewById(R.id.test_name);
-                //ImageView picBox = (ImageView)row.findViewById(R.id.album_pic);
+                ImageView picBox = (ImageView)row.findViewById(R.id.test_pic);
                 //Here put images of tests
 
                 testNameField.setText("haha");//Integer.toString(position + 1));
@@ -85,13 +81,7 @@ public class SelectTest extends Activity {
                 return row; //the row that ListView draws
             }
 
-            /*<ImageView
-                android:layout_width="150dp"
-                android:layout_height="100dp"
-                android:scaleType="fitXY"
 
-                android:background="@color/material_blue_grey_900"
-                android:id="@+id/test_pic"*/
 
         };
 

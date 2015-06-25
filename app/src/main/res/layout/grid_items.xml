@@ -8,6 +8,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+
+            <ImageView
+                android:layout_width="150dp"
+                android:layout_height="100dp"
+                android:scaleType="fitXY"
+                android:background="@color/material_blue_grey_900"
+                android:id="@+id/test_pic"/>
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
