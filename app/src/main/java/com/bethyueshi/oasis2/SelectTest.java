@@ -26,6 +26,7 @@ public class SelectTest extends Activity {
 
     private List<Bitmap> testPic;
     private Integer[] hei = new Integer[9];
+
     ProgressBar progressBar;
     double latitude = 0;
     double longitude = 0;
@@ -37,9 +38,10 @@ public class SelectTest extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_test);
 
-        progressBar = (ProgressBar) findViewById(R.id.progressBar4);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
         progressBar.setVisibility(View.INVISIBLE);
 
+        //Get extras in intent from previous activity
         Intent in = getIntent();
         latitude = in.getDoubleExtra("lat", 0);
         longitude = in.getDoubleExtra("lng", 0);
@@ -50,7 +52,6 @@ public class SelectTest extends Activity {
             img = extras.getString("img");
         }
 
-
         // Get a reference to our ListView
         GridView gridView = (GridView) findViewById(R.id.gridView);
         testPic = new ArrayList<Bitmap>();
@@ -59,6 +60,7 @@ public class SelectTest extends Activity {
         hei[1] = 2;
         hei[3] = 4;
         hei[2] = 3;
+
         // Create the adapter passing a reference to the XML layout for each row
         // and a reference to the EditText (or TextView) in the item XML layout
         ArrayAdapter adapter = new ArrayAdapter(SelectTest.this, R.layout.grid_items, hei) {
@@ -79,11 +81,11 @@ public class SelectTest extends Activity {
                 //Here put images of tests
 
                 testNameField.setText("haha");//Integer.toString(position + 1));
-               // picBox.setImageBitmap(bitPic.get(position));
+                // picBox.setImageBitmap(bitPic.get(position));
                 return row; //the row that ListView draws
             }
 
-/*<ImageView
+            /*<ImageView
                 android:layout_width="150dp"
                 android:layout_height="100dp"
                 android:scaleType="fitXY"
@@ -97,30 +99,12 @@ public class SelectTest extends Activity {
         // Set the adapter on the List View
         gridView.setAdapter(adapter);
 
-       gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
 
-                /*Toast.makeText(getApplicationContext(),
-                        "Click ListItem Number " + position, Toast.LENGTH_LONG)
-                .show();*/
-                //need to add pop up first
                 new UploadImgur(progressBar, img, latitude, longitude, timeStamp).execute();
-
-                /*Intent intent = new Intent(ViewAlbumActivity.this, PicturesActivity.class);
-                //Convert to byte array
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                bitPic.get(position).compress(Bitmap.CompressFormat.JPEG, 100, stream);
-                byte[] byteArray = stream.toByteArray();
-                intent.putExtra("bitmap", byteArray);
-                //use album name to interact with data base
-                //EditText editText = (EditText) findViewById(R.id.edit_message);
-                //String message = editText.getText().toString();
-                //intent.putExtra(EXTRA_MESSAGE, message);
-                startActivity(intent);
-
-                // http request to data base to submit stuff*/
 
             }
         });
