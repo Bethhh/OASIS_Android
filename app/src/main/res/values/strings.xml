@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">OASIS2</string>
 
-    <string name="hello_world">Hello world!</string>
+    <string name="thank_you">Thank you for your submission!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_select_test">SelectTest</string>
+    <string name="title_activity_feedback">FeedbackActivity</string>
 </resources>

@@ -100,7 +100,7 @@ public class SelectTest extends Activity {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
 
-                new UploadImgur(progressBar, img, latitude, longitude, timeStamp, android_id).execute();
+                new UploadImgur(progressBar, img, latitude, longitude, timeStamp, android_id, SelectTest.this).execute();
 
             }
         });

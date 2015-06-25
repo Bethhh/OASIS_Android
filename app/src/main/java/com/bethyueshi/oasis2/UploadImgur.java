@@ -1,5 +1,7 @@
 package com.bethyueshi.oasis2;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.provider.Settings;
 import android.util.Log;
@@ -31,14 +33,16 @@ class UploadImgur extends AsyncTask<Void, Void, Integer> {
     private double longitude;
     private String timestamp;
     private String aid;
+    private Context ctx;
 
-    public UploadImgur(ProgressBar pb, String data, double lat, double lng, String ts, String a_id){
+    public UploadImgur(ProgressBar pb, String data, double lat, double lng, String ts, String a_id, Context context){
         this.progressBar = pb;
         this.encodedImage = data;
         this.latitude = lat;
         this.longitude = lng;
         this.timestamp = ts;
         this.aid = a_id;
+        this.ctx = context.getApplicationContext();
     }
     protected void onPreExecute(){
         progressBar.setVisibility(View.VISIBLE);
@@ -97,6 +101,10 @@ class UploadImgur extends AsyncTask<Void, Void, Integer> {
     protected void onPostExecute(Integer status){
         progressBar.setVisibility(View.INVISIBLE);
         //Do somehting with status
+
+        Intent intent = new Intent(ctx, FeedbackActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        ctx.startActivity(intent);
     }
 
     private Integer prepareAndSendData(String url){
