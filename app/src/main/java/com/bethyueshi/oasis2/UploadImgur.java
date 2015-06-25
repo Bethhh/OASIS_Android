@@ -3,7 +3,6 @@ package com.bethyueshi.oasis2;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -17,6 +16,7 @@ import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
+import android.provider.Settings.Secure;
 
 /**
  * Created by bethyueshi on 6/22/15.
@@ -119,6 +119,10 @@ class UploadImgur extends AsyncTask<Void, Void, Integer> {
         try {
 
             JSONObject jsonObject = new JSONObject();
+            String android_id = Secure.getString(ctx.getContentResolver(), Secure.ANDROID_ID);
+
+            Log.d("Android","Android ID : "+android_id);
+
 
             //Test data
             jsonObject.put("ph", 2);
@@ -133,7 +137,7 @@ class UploadImgur extends AsyncTask<Void, Void, Integer> {
             jsonObject.put("long", longitude);
             jsonObject.put("timestamp", timestamp);
             jsonObject.put("testdata", true);
-            //jsonObject.put("aid", aid);
+            jsonObject.put("deviceID", android_id);
 
 
             String json = jsonObject.toString();
@@ -149,7 +153,12 @@ class UploadImgur extends AsyncTask<Void, Void, Integer> {
             final String response_string = EntityUtils.toString(response.getEntity());
             jsonObject = new JSONObject(response_string);
 
-            Log.d("JSON", jsonObject.toString()); //Response (json)
+            if(jsonObject.toString().equals("{\"error\":\"Internal Server Error\",\"status\":\"500\"}")){
+                Log.d("JSON", "Successful POST");
+            }
+            else{
+                Log.d("JSON", jsonObject.toString());
+            }
 
             status = response.getStatusLine().getStatusCode();
             return status;
