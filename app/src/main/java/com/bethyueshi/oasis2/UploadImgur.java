@@ -104,10 +104,16 @@ class UploadImgur extends AsyncTask<Void, Void, Integer> {
 
             JSONObject jsonObject = new JSONObject();
 
-            jsonObject.accumulate("ph", 2);
-            jsonObject.accumulate("magnified_Link", url);
-            jsonObject.accumulate("lat", latitude);
-            jsonObject.accumulate("long", longitude);
+            jsonObject.put("ph", 2);
+            jsonObject.put("chlorine", 2.0);
+            jsonObject.put("magnified_Link", url);//URLEncoder.encode(encodedImage, "UTF-8"));
+            jsonObject.put("taste", "yucky");
+            jsonObject.put("odor", "smelly");
+            jsonObject.put("temperature", "77.0");
+            jsonObject.put("mercury", 234);
+            jsonObject.put("hardness", 9.0);
+            jsonObject.put("lat", latitude);
+            jsonObject.put("long", longitude);
             //jsonObject.accumulate("timestamp", timeStamp);
 
             String json = jsonObject.toString();
