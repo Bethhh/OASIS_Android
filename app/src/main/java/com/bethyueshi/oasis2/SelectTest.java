@@ -1,6 +1,7 @@
 package com.bethyueshi.oasis2;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -26,16 +27,34 @@ public class SelectTest extends Activity {
     private List<Bitmap> testPic;
     private Integer[] hei = new Integer[9];
     ProgressBar progressBar;
+    double latitude = 0;
+    double longitude = 0;
+    String img = null;
+    String timeStamp = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_test);
 
+        progressBar = (ProgressBar) findViewById(R.id.progressBar4);
+        progressBar.setVisibility(View.INVISIBLE);
+
+        Intent in = getIntent();
+        latitude = in.getDoubleExtra("lat", 0);
+        longitude = in.getDoubleExtra("lng", 0);
+
+        Bundle extras = in.getExtras();
+        if(extras != null) {
+            timeStamp = extras.getString("ts");
+            img = extras.getString("img");
+        }
+
+
         // Get a reference to our ListView
         GridView gridView = (GridView) findViewById(R.id.gridView);
         testPic = new ArrayList<Bitmap>();
-        Log.d("select","inHAHAHAHAHAH");
+
         hei[0] = 1;
         hei[1] = 2;
         hei[3] = 4;
@@ -58,7 +77,7 @@ public class SelectTest extends Activity {
                 TextView testNameField = (TextView)row.findViewById(R.id.test_name);
                 //ImageView picBox = (ImageView)row.findViewById(R.id.album_pic);
                 //Here put images of tests
-                Log.d("select","HAHAHAHAHAH");
+
                 testNameField.setText("haha");//Integer.toString(position + 1));
                // picBox.setImageBitmap(bitPic.get(position));
                 return row; //the row that ListView draws
@@ -87,13 +106,7 @@ public class SelectTest extends Activity {
                         "Click ListItem Number " + position, Toast.LENGTH_LONG)
                 .show();*/
                 //need to add pop up first
-                boolean flag = true;
-                while(flag){
-                    if(allowToSubmit){//need to global
-                        new SubmitData(progressBar, url, latitude, longitude).execute();
-                    }
-
-                }
+                new UploadImgur(progressBar, img, latitude, longitude).execute();
 
                 /*Intent intent = new Intent(ViewAlbumActivity.this, PicturesActivity.class);
                 //Convert to byte array

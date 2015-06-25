@@ -79,16 +79,16 @@ class UploadImgur extends AsyncTask<Void, Void, Integer> {
             Log.d("JSON", jsonObject.getString("link").toString()); //for my own understanding
             ret = jsonObject.getString("link").toString();
 
-            status = response.getStatusLine().getStatusCode();
-            return status;
+            //status = response.getStatusLine().getStatusCode();
+            //return status;
 
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            //return null;
         }
 
         //need to notify the main activity the url TODO
-        //return prepareAndSendData(ret);
+        return prepareAndSendData(ret);
     }
 
     protected void onPostExecute(Integer status){
