@@ -49,13 +49,12 @@ public class CameraActivity extends Activity {
 
     private Camera mCamera;
     private CameraPreview mPreview;
+
     private static final String TAG = "Camera";
+
     double latitude;
     double longitude;
-    String img;
     String timeStamp;
-
-   // ProgressBar progressBar;
     String encodedImage = "";
 
     @Override
@@ -63,17 +62,13 @@ public class CameraActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
 
-        // Create an instance of Camera
-        //mCamera
+        // Create an instance of Camere
         getCameraInstance();
 
         // Create our Preview view and set it as the content of our activity.
         mPreview = new CameraPreview(this, mCamera);
         FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview);
         preview.addView(mPreview);
-
-
-
 
         // Add a listener to the Capture button
         Button captureButton = (Button) findViewById(R.id.button_capture);
@@ -83,7 +78,11 @@ public class CameraActivity extends Activity {
                     public void onClick(View v) {
                         // get an image from the camera
                         mCamera.takePicture(null, null, mPicture);
+
+                        //time stamp
                         timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+
+                        //location
                         GPSTracker tracker = new GPSTracker(CameraActivity.this);
                         if (tracker.canGetLocation() == false) {
                             tracker.showSettingsAlert();
@@ -100,20 +99,14 @@ public class CameraActivity extends Activity {
 
         @Override
         public void onPictureTaken(byte[] data, Camera camera) {
-            //uploadImage(data);
             chooseTest(data);
         }
     };
 
-    //private void uploadImage(byte[] data) {
     private void chooseTest(byte[] data){
 
         encodedImage = Base64.encodeToString(data, Base64.DEFAULT);
         Log.d(TAG, encodedImage);
-
-        //URL to imgur
-
-        //new UploadImgur(progressBar, encodedImage, latitude, longitude).execute();
 
         //Start Select Test
         Intent intent = new Intent(CameraActivity.this, SelectTest.class);
@@ -125,9 +118,8 @@ public class CameraActivity extends Activity {
 
         startActivity(intent);
     }
-    
 
-    /** Check if this device has a camera */
+    /** Check if this device has a camera TODO maybe we need to call this*/
     private boolean checkCameraHardware(Context context) {
         if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)){
             // this device has a camera
@@ -145,26 +137,24 @@ public class CameraActivity extends Activity {
             mCamera = null;
         }
     }
+
     /** A safe way to get an instance of the Camera object. */
-    public void getCameraInstance(){
+    public void getCameraInstance() {
         releaseCameraAndPreview();
-        //Camera c = null;
+
         try {
-            mCamera = Camera.open(0); // attempt to get a Camera instance
-            if(mCamera == null)
+            mCamera = Camera.open(0); // attempt to get a Camera instance TODO check front/back camera
+            if (mCamera == null)
                 Log.d(TAG, "Camera is null");
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             // Camera is not available (in use or does not exist)
             Log.d(TAG, "Error getting camera: " + e.getMessage());
         }
-        //xreturn c; // returns null if camera is unavailable
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        //releaseMediaRecorder();       // if you are using MediaRecorder, release it first
         releaseCamera();              // release the camera immediately on pause event
     }
 
