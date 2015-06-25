@@ -20,12 +20,15 @@ import java.util.Date;
 
 /**
  * Created by bethyueshi on 6/22/15.
+ * Upload to imgur and submit to database
  */
 class UploadImgur extends AsyncTask<Void, Void, Integer> {
+
+    private static final String TAG = "UploadImgur";
+    private static final String API_KEY =  "271a72b8dd082c6"; //Imgur client ID
+
     private ProgressBar progressBar;
     private String encodedImage;
-    private static final String TAG = "UploadImgur";
-    private static final String API_KEY =  "271a72b8dd082c6";
     private double latitude;
     private double longitude;
     private String timestamp;
@@ -79,7 +82,7 @@ class UploadImgur extends AsyncTask<Void, Void, Integer> {
             jsonObject = jsonObject.getJSONObject("data");
 
             Log.d("JSON", jsonObject.getString("link").toString()); //for my own understanding
-            ret = jsonObject.getString("link").toString();
+            ret = jsonObject.getString("link").toString();//return url from imgur
 
             //status = response.getStatusLine().getStatusCode();
             //return status;
