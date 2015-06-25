@@ -25,6 +25,7 @@ public class SelectTest extends Activity {
     private Integer[] hei = new Integer[9];
 
     private String android_id;
+    private String[] testTextFiller = new String[]{"pH","Chlorine","Taste","Odor","Temperature","Mercury","Hardness","русский", "OASIS"};
 
     ProgressBar progressBar;
     double latitude = 0;
@@ -69,6 +70,7 @@ public class SelectTest extends Activity {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 View row = convertView;
+                boolean textFilled = false;
                 final int pos = position;
                 if(row == null){
                     //getting custom layout for the row
@@ -81,8 +83,8 @@ public class SelectTest extends Activity {
                 TextView testNameField = (TextView)row.findViewById(R.id.test_name);
                 ImageView picBox = (ImageView)row.findViewById(R.id.test_pic);
                 //Here put images of tests
-
-                testNameField.setText("haha");//Integer.toString(position + 1));
+                testNameField.setText(testTextFiller[position]);
+                //Integer.toString(position + 1));
                 // picBox.setImageBitmap(bitPic.get(position));
                 return row; //the row that ListView draws
             }
