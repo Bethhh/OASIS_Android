@@ -86,10 +86,8 @@ class UploadImgur extends AsyncTask<Void, Void, Integer> {
 
         } catch (Exception e) {
             e.printStackTrace();
-            //return null;
         }
 
-        //need to notify the main activity the url TODO
         return prepareAndSendData(ret);
     }
 
@@ -100,8 +98,6 @@ class UploadImgur extends AsyncTask<Void, Void, Integer> {
 
     private Integer prepareAndSendData(String url){
         Integer status;
-        //time stamp
-        //String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
 
         final String submit_to = "https://distributed-health.herokuapp.com/distributed_healths.json";
         HttpClient httpClient = new DefaultHttpClient();
@@ -112,9 +108,10 @@ class UploadImgur extends AsyncTask<Void, Void, Integer> {
 
             JSONObject jsonObject = new JSONObject();
 
+            //Test data
             jsonObject.put("ph", 2);
-            jsonObject.put("chlorine", 2.0);
-            jsonObject.put("magnified_Link", url);//URLEncoder.encode(encodedImage, "UTF-8"));
+            jsonObject.put("chlorine", 3.0);
+            jsonObject.put("magnified_Link", url);
             jsonObject.put("taste", "yucky");
             jsonObject.put("odor", "smelly");
             jsonObject.put("temperature", "77.0");
@@ -124,10 +121,9 @@ class UploadImgur extends AsyncTask<Void, Void, Integer> {
             jsonObject.put("long", longitude);
             jsonObject.put("timestamp", timestamp);
             jsonObject.put("testdata", true);
-            //jsonObject.accumulate("timestamp", timeStamp);
+
 
             String json = jsonObject.toString();
-            //json = "{\"ph\":32.0,\"chlorine\":3.0,\"magnified_Link\":\"http://fdasfasf.com\",\"taste\":\"3\",\"odor\":\"4\",\"temperature\":4.0,\"mercury\":4.0,\"hardness\":4.0,\"lat\":4.0,\"long\":4.0}";
             Log.d(TAG, json);  //json sent
 
             StringEntity se = new StringEntity(json);
