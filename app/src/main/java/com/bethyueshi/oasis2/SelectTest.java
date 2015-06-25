@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,8 @@ public class SelectTest extends Activity {
 
     private List<Bitmap> testPic;
     private Integer[] hei = new Integer[9];
+
+    private String android_id;
 
     ProgressBar progressBar;
     double latitude = 0;
@@ -47,6 +50,9 @@ public class SelectTest extends Activity {
             timeStamp = extras.getString("ts");
             img = extras.getString("img");
         }
+
+        android_id = android_id = Settings.Secure.getString(getApplicationContext().getContentResolver(),
+                Settings.Secure.ANDROID_ID);
 
         // Get a reference to our ListView
         GridView gridView = (GridView) findViewById(R.id.gridView);
@@ -94,7 +100,7 @@ public class SelectTest extends Activity {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
 
-                new UploadImgur(progressBar, img, latitude, longitude, timeStamp).execute();
+                new UploadImgur(progressBar, img, latitude, longitude, timeStamp, android_id).execute();
 
             }
         });

@@ -1,6 +1,7 @@
 package com.bethyueshi.oasis2;
 
 import android.os.AsyncTask;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -29,13 +30,15 @@ class UploadImgur extends AsyncTask<Void, Void, Integer> {
     private double latitude;
     private double longitude;
     private String timestamp;
+    private String aid;
 
-    public UploadImgur(ProgressBar pb, String data, double lat, double lng, String ts){
+    public UploadImgur(ProgressBar pb, String data, double lat, double lng, String ts, String a_id){
         this.progressBar = pb;
         this.encodedImage = data;
         this.latitude = lat;
         this.longitude = lng;
         this.timestamp = ts;
+        this.aid = a_id;
     }
     protected void onPreExecute(){
         progressBar.setVisibility(View.VISIBLE);
@@ -104,6 +107,7 @@ class UploadImgur extends AsyncTask<Void, Void, Integer> {
         HttpContext localContext = new BasicHttpContext();
         HttpPost httpPost = new HttpPost(submit_to);
 
+
         try {
 
             JSONObject jsonObject = new JSONObject();
@@ -121,6 +125,7 @@ class UploadImgur extends AsyncTask<Void, Void, Integer> {
             jsonObject.put("long", longitude);
             jsonObject.put("timestamp", timestamp);
             jsonObject.put("testdata", true);
+            //jsonObject.put("aid", aid);
 
 
             String json = jsonObject.toString();
