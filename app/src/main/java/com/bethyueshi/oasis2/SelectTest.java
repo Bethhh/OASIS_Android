@@ -1,8 +1,10 @@
 package com.bethyueshi.oasis2;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.LayoutInflater;
@@ -21,8 +23,8 @@ import java.util.List;
 
 public class SelectTest extends Activity {
 
-    private List<Bitmap> testPic;
     private Integer[] hei = new Integer[9];
+    private Context ctx;
 
     private String android_id;
     private String[] testTextFiller = new String[]{"pH","Chlorine","Taste","Odor","Temperature","Mercury","Hardness","русский", "OASIS"};
@@ -57,7 +59,6 @@ public class SelectTest extends Activity {
 
         // Get a reference to our ListView
         GridView gridView = (GridView) findViewById(R.id.gridView);
-        testPic = new ArrayList<Bitmap>();
 
         hei[0] = 1;
         hei[1] = 2;
@@ -70,7 +71,6 @@ public class SelectTest extends Activity {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 View row = convertView;
-                boolean textFilled = false;
                 final int pos = position;
                 if(row == null){
                     //getting custom layout for the row
@@ -82,6 +82,28 @@ public class SelectTest extends Activity {
                 //find the item with row.findViewById()
                 TextView testNameField = (TextView)row.findViewById(R.id.test_name);
                 ImageView picBox = (ImageView)row.findViewById(R.id.test_pic);
+                if(position == 0){
+                    picBox.setImageResource(R.drawable.ph_tile);
+                }
+                else if(position == 1){
+                    picBox.setImageResource(R.drawable.cl_tile);
+                }
+                else if(position == 2){
+                    picBox.setImageResource(R.drawable.taste_tile);
+                }
+                else if(position == 3){
+                    picBox.setImageResource(R.drawable.smell_tile);
+                }
+                else if(position == 4){
+                    picBox.setImageResource(R.drawable.temp_tile);
+                }
+                else if(position == 5){
+                    picBox.setImageResource(R.drawable.mercury_tile);
+                }
+                else if(position == 6){
+                    picBox.setImageResource(R.drawable.hardness_tile);
+                }
+
                 //Here put images of tests
                 testNameField.setText(testTextFiller[position]);
                 //Integer.toString(position + 1));
