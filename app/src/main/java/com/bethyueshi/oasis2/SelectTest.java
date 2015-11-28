@@ -1,8 +1,8 @@
 package com.bethyueshi.oasis2;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.LayoutInflater;
@@ -15,13 +15,8 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 
 public class SelectTest extends Activity {
-
-    private List<Bitmap> testPic;
     private Integer[] gifBtns = new Integer[9];
 
     private String android_id;
@@ -57,7 +52,6 @@ public class SelectTest extends Activity {
 
         // Get a reference to our ListView
         GridView gridView = (GridView) findViewById(R.id.gridView);
-        testPic = new ArrayList<Bitmap>();
 
         gifBtns[0] = R.drawable.t1;
         gifBtns[1] = R.drawable.t1;
@@ -66,7 +60,7 @@ public class SelectTest extends Activity {
         gifBtns[4] = R.drawable.t2;
         gifBtns[5] = R.drawable.t2;
         gifBtns[6] = R.drawable.t2;
-        gifBtns[7] = R.drawable.t1;
+        gifBtns[7] = R.drawable.t2;
         gifBtns[8] = R.drawable.t2;
 
         // Create the adapter passing a reference to the XML layout for each row
@@ -75,7 +69,7 @@ public class SelectTest extends Activity {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 View row = convertView;
-                boolean textFilled = false;
+
                 if(row == null){
                     //getting custom layout for the row
                     LayoutInflater inflater = getLayoutInflater();//LayoutInflater.from(getActivity());
@@ -84,6 +78,7 @@ public class SelectTest extends Activity {
 
                 //TextView testNameField = (TextView)row.findViewById(R.id.test_name);
                 GIFView picTop = (GIFView)row.findViewById(R.id.test_pic);
+
                 //Here put images of tests
                 //testNameField.setText(testTextFiller[position]);
                 picTop.setSrc((int)getItem(position));
