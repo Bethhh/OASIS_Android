@@ -23,7 +23,6 @@ public class CameraActivity extends Activity {
     private CameraPreview mPreview;
 
     private static final String TAG = "Camera";
-
     double latitude;
     double longitude;
     String timeStamp;

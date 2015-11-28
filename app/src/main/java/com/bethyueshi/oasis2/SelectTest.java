@@ -22,7 +22,7 @@ import java.util.List;
 public class SelectTest extends Activity {
 
     private List<Bitmap> testPic;
-    private Integer[] hei = new Integer[9];
+    private Integer[] gifBtns = new Integer[9];
 
     private String android_id;
     private String[] testTextFiller = new String[]{"pH","Chlorine","Taste","Odor","Temperature","Mercury","Hardness","русский", "OASIS"};
@@ -59,38 +59,37 @@ public class SelectTest extends Activity {
         GridView gridView = (GridView) findViewById(R.id.gridView);
         testPic = new ArrayList<Bitmap>();
 
-        hei[0] = 1;
-        hei[1] = 2;
-        hei[3] = 4;
-        hei[2] = 3;
+        gifBtns[0] = R.drawable.t1;
+        gifBtns[1] = R.drawable.t1;
+        gifBtns[2] = R.drawable.t1;
+        gifBtns[3] = R.drawable.t1;
+        gifBtns[4] = R.drawable.t2;
+        gifBtns[5] = R.drawable.t2;
+        gifBtns[6] = R.drawable.t2;
+        gifBtns[7] = R.drawable.t1;
+        gifBtns[8] = R.drawable.t2;
 
         // Create the adapter passing a reference to the XML layout for each row
         // and a reference to the EditText (or TextView) in the item XML layout
-        ArrayAdapter adapter = new ArrayAdapter(SelectTest.this, R.layout.grid_items, hei) {
+        ArrayAdapter adapter = new ArrayAdapter(SelectTest.this, R.layout.grid_items, gifBtns) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 View row = convertView;
                 boolean textFilled = false;
-                final int pos = position;
                 if(row == null){
                     //getting custom layout for the row
                     LayoutInflater inflater = getLayoutInflater();//LayoutInflater.from(getActivity());
                     row = inflater.inflate(R.layout.grid_items, parent, false);
                 }
 
-                //get the reference to the EditText of your row.
-                //find the item with row.findViewById()
-                TextView testNameField = (TextView)row.findViewById(R.id.test_name);
-                ImageView picBox = (ImageView)row.findViewById(R.id.test_pic);
+                //TextView testNameField = (TextView)row.findViewById(R.id.test_name);
+                GIFView picTop = (GIFView)row.findViewById(R.id.test_pic);
                 //Here put images of tests
-                testNameField.setText(testTextFiller[position]);
-                //Integer.toString(position + 1));
+                //testNameField.setText(testTextFiller[position]);
+                picTop.setSrc((int)getItem(position));
                 // picBox.setImageBitmap(bitPic.get(position));
                 return row; //the row that ListView draws
             }
-
-
-
         };
 
 
@@ -101,13 +100,10 @@ public class SelectTest extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-
-                new UploadImgur(progressBar, img, latitude, longitude, timeStamp, android_id, SelectTest.this).execute();
-
+                new UploadImgur(progressBar, img,
+                                latitude, longitude, timeStamp,
+                                android_id, SelectTest.this).execute();
             }
         });
-
     }
-
-
 }

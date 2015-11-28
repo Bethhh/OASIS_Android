@@ -100,7 +100,7 @@ class UploadImgur extends AsyncTask<Void, Void, Integer> {
 
     protected void onPostExecute(Integer status){
         progressBar.setVisibility(View.INVISIBLE);
-        //Do somehting with status
+        //Do somehting with status code TODO
 
         Intent intent = new Intent(ctx, FeedbackActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -159,7 +159,7 @@ class UploadImgur extends AsyncTask<Void, Void, Integer> {
             else{
                 Log.d("JSON", jsonObject.toString());
             }
-
+             //TODO status code
             status = response.getStatusLine().getStatusCode();
             return status;
 
