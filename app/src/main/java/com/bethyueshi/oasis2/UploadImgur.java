@@ -110,7 +110,8 @@ class UploadImgur extends AsyncTask<Void, Void, Integer> {
     private Integer prepareAndSendData(String url){
         Integer status;
 
-        final String submit_to = "https://distributed-health.herokuapp.com/distributed_healths.json";
+        //final String submit_to = "https://distributed-health.herokuapp.com/distributed_healths.json";
+        final String submit_to = "http://52.53.219.240/putph.php";
         HttpClient httpClient = new DefaultHttpClient();
         HttpContext localContext = new BasicHttpContext();
         HttpPost httpPost = new HttpPost(submit_to);
