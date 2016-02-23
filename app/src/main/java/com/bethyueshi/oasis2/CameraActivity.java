@@ -117,9 +117,14 @@ public class CameraActivity extends Activity {
             mCamera = Camera.open(0); // attempt to get a Camera instance TODO check front/back camera
             if (mCamera == null)
                 Log.d(TAG, "Camera is null");
+            //Camera.Parameters parameters = mCamera.getParameters();
+            //parameters.set("orientation", "portrait");
+            //mCamera.setParameters(parameters);
+            mCamera.setDisplayOrientation(270);// TODO: needed only for test device
         } catch (Exception e) {
             // Camera is not available (in use or does not exist)
             Log.d(TAG, "Error getting camera: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 

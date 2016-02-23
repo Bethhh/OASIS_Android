@@ -119,14 +119,14 @@ class UploadImgur extends AsyncTask<Void, Void, Integer> {
 
         try {
 
-            JSONObject jsonObject = new JSONObject();
+            /*JSONObject jsonObject = new JSONObject();*/
             String android_id = Secure.getString(ctx.getContentResolver(), Secure.ANDROID_ID);
 
             Log.d("Android","Android ID : "+android_id);
 
 
             //Test data
-            jsonObject.put("ph", 2);
+            /*jsonObject.put("ph", 2);
             jsonObject.put("chlorine", 3.0);
             jsonObject.put("magnified_Link", url);
             jsonObject.put("taste", "yucky");
@@ -138,30 +138,33 @@ class UploadImgur extends AsyncTask<Void, Void, Integer> {
             jsonObject.put("long", longitude);
             jsonObject.put("timestamp", timestamp);
             jsonObject.put("testdata", true);
-            jsonObject.put("deviceID", android_id);
+            jsonObject.put("id", android_id);*/
 
-
-            String json = jsonObject.toString();
+            String json = submit_to + "?" + "id=" + android_id + "&ph=" + 6.0;
+            //String json = jsonObject.toString();
             Log.d(TAG, json);  //json sent
 
             StringEntity se = new StringEntity(json);
             httpPost.setEntity(se);
 
-            httpPost.setHeader("Accept", "application/json");
-            httpPost.setHeader("Content-type", "application/json");
+            //httpPost.setHeader("Accept", "application/json");
+            //httpPost.setHeader("Content-type", "application/json");
+            httpPost.setHeader("Accept", "application/x-www-form-urlencoded;charset=UTF-8");
+            httpPost.setHeader("Content-type", "application/x-www-form-urlencoded;charset=UTF-8");
 
             final HttpResponse response = httpClient.execute(httpPost, localContext);
             final String response_string = EntityUtils.toString(response.getEntity());
-            jsonObject = new JSONObject(response_string);
-
-            if(jsonObject.toString().equals("{\"error\":\"Internal Server Error\",\"status\":\"500\"}")){
-                Log.d("JSON", "Successful POST");
-            }
-            else{
-                Log.d("JSON", jsonObject.toString());
-            }
+            //jsonObject = new JSONObject(response_string);
+            Log.d("REST","response : "+ response_string);
+            //if(jsonObject.toString().equals("{\"error\":\"Internal Server Error\",\"status\":\"500\"}")){
+            //    Log.d("JSON", "Successful POST");
+            //}
+            //else{
+            //    Log.d("JSON", jsonObject.toString());
+            //}
              //TODO status code
             status = response.getStatusLine().getStatusCode();
+            Log.d("REST","status : "+ status);
             return status;
 
         } catch (Exception e) {

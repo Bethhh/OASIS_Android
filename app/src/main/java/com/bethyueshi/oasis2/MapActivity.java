@@ -3,16 +3,20 @@ package com.bethyueshi.oasis2;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.webkit.GeolocationPermissions;
-import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
 
-public class MapActivity extends AppCompatActivity {
 
-    private WebView mWebView;
+import com.viewpagerindicator.IconPageIndicator;
+
+public class MapActivity extends FragmentActivity {
+
+
+    private MapPagerAdapter mMapPagerAdaper;
+    private ViewPager mViewPager;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,17 +24,13 @@ public class MapActivity extends AppCompatActivity {
         //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
 
-        mWebView = (WebView)findViewById(R.id.map);
-        mWebView.setWebChromeClient(new WebChromeClient(){
-            public void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback callback) {
-                callback.invoke(origin, true, false);
-            }
-        });
-        WebSettings webSettings = mWebView.getSettings();
-        webSettings.setJavaScriptEnabled(true);
-        //webSettings.setGeolocationEnabled(true);
+        //Set the pager with an adapter
+        mViewPager = (ViewPager)findViewById(R.id.pager);
+        mViewPager.setAdapter(new MapPagerAdapter(getSupportFragmentManager()));
 
-        mWebView.loadUrl("http://leafletjs.com/examples/mobile-example.html");
+        //Bind the icon indicator to the adapter
+        IconPageIndicator iconIndicator = (IconPageIndicator)findViewById(R.id.icons);
+        iconIndicator.setViewPager(mViewPager);
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -42,8 +42,7 @@ public class MapActivity extends AppCompatActivity {
             }
         });
 
-
-
     }
 
 }
+

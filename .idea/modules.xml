@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/OASIS2.iml" filepath="$PROJECT_DIR$/OASIS2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libs/ViewPageIndicator/ViewPageIndicator.iml" filepath="$PROJECT_DIR$/libs/ViewPageIndicator/ViewPageIndicator.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libs/libs.iml" filepath="$PROJECT_DIR$/libs/libs.iml" />
     </modules>
   </component>
 </project>
