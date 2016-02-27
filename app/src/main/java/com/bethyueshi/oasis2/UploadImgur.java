@@ -14,7 +14,6 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
@@ -115,17 +114,11 @@ class UploadImgur extends AsyncTask<Void, Void, Integer> {
 
     private Integer prepareAndSendData(String url){
         Integer status;
-
-        //final String submit_to = "https://distributed-health.herokuapp.com/distributed_healths.json";
-
+        final String submit_to = "http://52.53.219.240/putph.php";
 
         try {
-
-            /*JSONObject jsonObject = new JSONObject();*/
             String android_id = Secure.getString(ctx.getContentResolver(), Secure.ANDROID_ID);
-
             Log.d("Android","Android ID : "+android_id);
-
 
             //Test data
             /*jsonObject.put("ph", 2);
@@ -142,40 +135,32 @@ class UploadImgur extends AsyncTask<Void, Void, Integer> {
             jsonObject.put("testdata", true);
             jsonObject.put("id", android_id);*/
 
-            final String submit_to = "http://52.53.219.240/putph.php";
+
+            String postURL = submit_to + "?" + "id=" + android_id + "&ph=" + 6.8;
+            Log.d(TAG, postURL);
+
             HttpClient httpClient = new DefaultHttpClient();
             HttpContext localContext = new BasicHttpContext();
-
-
-            String json = submit_to + "?" + "id=" + android_id + "&ph=" + 6.8;
-            //String json = jsonObject.toString();
-            Log.d(TAG, json);  //json sent
+            HttpPost httpPost = new HttpPost(postURL);
 
             List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-            //nameValuePairs.add(new BasicNameValuePair("id", android_id));
-            //nameValuePairs.add(new BasicNameValuePair("ph", "6"));
-
-            HttpPost httpPost = new HttpPost(submit_to + "?" + "id=" + android_id + "&ph=" + 6.8);
-            //StringEntity se = new StringEntity(json);
-            //httpPost.setEntity(se);
             httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, "UTF-8"));
 
-            //httpPost.setHeader("Accept", "application/json");
-            //httpPost.setHeader("Content-type", "application/json");
             httpPost.setHeader("Accept", "application/x-www-form-urlencoded;charset=UTF-8");
             httpPost.setHeader("Content-type", "application/x-www-form-urlencoded;charset=UTF-8");
 
             final HttpResponse response = httpClient.execute(httpPost, localContext);
             final String response_string = EntityUtils.toString(response.getEntity());
-            //jsonObject = new JSONObject(response_string);
             Log.d("REST","response : "+ response_string);
-            //if(jsonObject.toString().equals("{\"error\":\"Internal Server Error\",\"status\":\"500\"}")){
-            //    Log.d("JSON", "Successful POST");
+
+
+            //if(response_string.charAt(response_string.length()-2)=='1'){
+            //    Log.d("Upload", "Successful POST");
+            //}else{
+            //    Log.d("Upload", "Failure" + response_string.charAt(response_string.length()-1));
             //}
-            //else{
-            //    Log.d("JSON", jsonObject.toString());
-            //}
-             //TODO status code
+
+            //TODO status code
             status = response.getStatusLine().getStatusCode();
             Log.d("REST","status : "+ status);
             return status;

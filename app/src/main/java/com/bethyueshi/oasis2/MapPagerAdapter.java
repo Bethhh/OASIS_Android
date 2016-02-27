@@ -14,10 +14,10 @@ public class MapPagerAdapter extends FragmentPagerAdapter implements IconPagerAd
     public static final int NUM_OF_MAPS = 4;
 
     protected static final int[] ICONS = new int[] {
-            R.drawable.taste_tile,
-            R.drawable.mercury_tile,
-            R.drawable.smell_tile,
-            R.drawable.ph_tile
+            R.drawable.perm_group_calendar,
+            R.drawable.perm_group_device_alarms,
+            R.drawable.perm_group_camera,
+            R.drawable.perm_group_location
     };
 
     public MapPagerAdapter(FragmentManager fm) {
