@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Base64;
@@ -14,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 
 
 import java.text.SimpleDateFormat;
@@ -32,6 +34,9 @@ public class CameraActivity extends Activity {
     String timeStamp;
     String encodedImage = "";
     public static final int MY_PERMISSIONS_REQUEST_CAMERA = 1;
+
+    ProgressBar progressBar;
+    private String android_id;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -104,29 +109,38 @@ public class CameraActivity extends Activity {
                     }
                 }
         );
+
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.INVISIBLE);
+
+        android_id = Settings.Secure.getString(getApplicationContext().getContentResolver(),
+                Settings.Secure.ANDROID_ID);
     }
 
     private Camera.PictureCallback mPicture = new Camera.PictureCallback() {
 
         @Override
         public void onPictureTaken(byte[] data, Camera camera) {
-            chooseTest(data);
+            upload(data);
         }
     };
 
-    private void chooseTest(byte[] data){
+    private void upload(byte[] data){
 
         encodedImage = Base64.encodeToString(data, Base64.DEFAULT);
         Log.d(TAG, encodedImage);
 
         //Start Select Test
-        Intent intent = new Intent(CameraActivity.this, SelectTest.class);
+        Intent intent = new Intent(CameraActivity.this, FeedbackActivity.class);
 
-        intent.putExtra("lat", latitude);
-        intent.putExtra("lng", longitude);
-        intent.putExtra("ts", timeStamp);
-        intent.putExtra("img", encodedImage);
+        //intent.putExtra("lat", latitude);
+        //intent.putExtra("lng", longitude);
+        //intent.putExtra("ts", timeStamp);
+        //intent.putExtra("img", encodedImage);
 
+        new UploadImgur(progressBar, encodedImage,
+                        latitude, longitude, timeStamp,
+                        android_id, CameraActivity.this).execute();
         startActivity(intent);
     }
 

@@ -136,7 +136,7 @@ class UploadImgur extends AsyncTask<Void, Void, Integer> {
             jsonObject.put("id", android_id);*/
 
 
-            String postURL = submit_to + "?" + "id=" + android_id + "&ph=" + 6.8;
+            String postURL = submit_to + "?" + "id=" + android_id + "&ph=" + 8.8;
             Log.d(TAG, postURL);
 
             HttpClient httpClient = new DefaultHttpClient();

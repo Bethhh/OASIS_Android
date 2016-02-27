@@ -19,36 +19,34 @@ import android.widget.TextView;
 public class SelectTest extends Activity {
     private Integer[] gifBtns = new Integer[9];
 
-    private String android_id;
+    //private String android_id;
     private String[] testTextFiller = new String[]{"pH","Chlorine","Taste","Odor","Temperature","Mercury","Hardness","русский", "OASIS"};
 
-    ProgressBar progressBar;
-    double latitude = 0;
-    double longitude = 0;
-    String img = null;
-    String timeStamp = null;
+
+    //double latitude = 0;
+    //double longitude = 0;
+    //String img = null;
+    //String timeStamp = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_test);
 
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
-        progressBar.setVisibility(View.INVISIBLE);
 
         //Get extras in intent from previous activity
-        Intent in = getIntent();
-        latitude = in.getDoubleExtra("lat", 0);
-        longitude = in.getDoubleExtra("lng", 0);
+        //Intent in = getIntent();
+        //latitude = in.getDoubleExtra("lat", 0);
+        //longitude = in.getDoubleExtra("lng", 0);
 
-        Bundle extras = in.getExtras();
-        if(extras != null) {
-            timeStamp = extras.getString("ts");
-            img = extras.getString("img");
-        }
+        //Bundle extras = in.getExtras();
+        //if(extras != null) {
+            //timeStamp = extras.getString("ts");
+            //img = extras.getString("img");
+        //}
 
-        android_id = android_id = Settings.Secure.getString(getApplicationContext().getContentResolver(),
-                Settings.Secure.ANDROID_ID);
+        //android_id = android_id = Settings.Secure.getString(getApplicationContext().getContentResolver(),
+        //        Settings.Secure.ANDROID_ID);
 
         // Get a reference to our ListView
         GridView gridView = (GridView) findViewById(R.id.gridView);
@@ -95,9 +93,12 @@ public class SelectTest extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                new UploadImgur(progressBar, img,
-                                latitude, longitude, timeStamp,
-                                android_id, SelectTest.this).execute();
+                //new UploadImgur(progressBar, img,
+                //                latitude, longitude, timeStamp,
+                //                android_id, SelectTest.this).execute();
+
+                Intent intent = new Intent(SelectTest.this, CameraActivity.class);
+                startActivity(intent);
             }
         });
     }

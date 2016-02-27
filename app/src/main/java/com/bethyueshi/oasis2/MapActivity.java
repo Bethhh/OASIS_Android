@@ -37,7 +37,7 @@ public class MapActivity extends FragmentActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MapActivity.this, CameraActivity.class);
+                Intent intent = new Intent(MapActivity.this, SelectTest.class);
                 startActivity(intent);
             }
         });
