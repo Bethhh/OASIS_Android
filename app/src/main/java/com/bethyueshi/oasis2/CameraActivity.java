@@ -1,11 +1,14 @@
 package com.bethyueshi.oasis2;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +18,7 @@ import android.widget.FrameLayout;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 
 public class CameraActivity extends Activity {
@@ -27,19 +31,55 @@ public class CameraActivity extends Activity {
     double longitude;
     String timeStamp;
     String encodedImage = "";
+    public static final int MY_PERMISSIONS_REQUEST_CAMERA = 1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
 
-        // Create an instance of Camere
-        getCameraInstance();
+        // Here, thisActivity is the current activity
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
 
-        // Create our Preview view and set it as the content of our activity.
-        mPreview = new CameraPreview(this, mCamera);
-        FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview);
-        preview.addView(mPreview);
+            // Should we show an explanation?
+            //if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+             //       Manifest.permission.CAMERA)) {
+
+                // Show an expanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+
+            //} else {
+            Log.d(TAG, "no permission request");
+
+                // No explanation needed, we can request the permission.
+
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.CAMERA},
+                        MY_PERMISSIONS_REQUEST_CAMERA);
+
+                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+            //}
+        }else{
+            getCameraInstance();
+            if(mCamera == null){
+                Log.d(TAG, "hahaCamerddddda is null");
+            }
+        }
+
+
+        if(mCamera == null){
+            Log.d(TAG, "hahaCdfdfdfdffamerddddda is null");
+        }
+
+
+        //Camera.Parameters parameters = mCamera.getParameters();
+        //parameters.setPictureSize(480, 800);
+        //mCamera.setParameters(parameters);
 
         // Add a listener to the Capture button
         Button captureButton = (Button) findViewById(R.id.button_capture);
@@ -105,7 +145,7 @@ public class CameraActivity extends Activity {
         //mPreview.setCamera(null);
         if (mCamera != null) {
             mCamera.release();
-            mCamera = null;
+            //mCamera = null;
         }
     }
 
@@ -113,19 +153,25 @@ public class CameraActivity extends Activity {
     public void getCameraInstance() {
         releaseCameraAndPreview();
 
+        int num = Camera.getNumberOfCameras();
         try {
-            mCamera = Camera.open(0); // attempt to get a Camera instance TODO check front/back camera
+
+            mCamera = Camera.open(); // attempt to get a Camera instance TODO check front/back camera
             if (mCamera == null)
-                Log.d(TAG, "Camera is null");
-            //Camera.Parameters parameters = mCamera.getParameters();
-            //parameters.set("orientation", "portrait");
-            //mCamera.setParameters(parameters);
-            mCamera.setDisplayOrientation(270);// TODO: needed only for test device
+                Log.d(TAG, "Camerad is null" + num + "hello");
+
         } catch (Exception e) {
             // Camera is not available (in use or does not exist)
             Log.d(TAG, "Error getting camera: " + e.getMessage());
             e.printStackTrace();
+            Log.d(TAG, "" + num + "hello");
         }
+
+        // Create our Preview view and set it as the content of our activity.
+        mPreview = new CameraPreview(this, mCamera);
+        FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview);
+        preview.addView(mPreview);
+
     }
 
     @Override
@@ -139,6 +185,40 @@ public class CameraActivity extends Activity {
         if (mCamera != null){
             mCamera.release();        // release the camera for other applications
             mCamera = null;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_CAMERA: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+                    // Create an instance of Camere
+                    getCameraInstance();
+                    Log.d(TAG, "try camera done");
+                    if(mCamera == null){
+                        Log.d(TAG, "Camerddddda is null");
+                    }
+
+
+
+                } else {
+//TODO
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                Log.d(TAG, "get permission");
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
         }
     }
 }

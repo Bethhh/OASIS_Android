@@ -8,15 +8,21 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 import android.provider.Settings.Secure;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by bethyueshi on 6/22/15.
@@ -111,10 +117,6 @@ class UploadImgur extends AsyncTask<Void, Void, Integer> {
         Integer status;
 
         //final String submit_to = "https://distributed-health.herokuapp.com/distributed_healths.json";
-        final String submit_to = "http://52.53.219.240/putph.php";
-        HttpClient httpClient = new DefaultHttpClient();
-        HttpContext localContext = new BasicHttpContext();
-        HttpPost httpPost = new HttpPost(submit_to);
 
 
         try {
@@ -140,12 +142,23 @@ class UploadImgur extends AsyncTask<Void, Void, Integer> {
             jsonObject.put("testdata", true);
             jsonObject.put("id", android_id);*/
 
-            String json = submit_to + "?" + "id=" + android_id + "&ph=" + 6.0;
+            final String submit_to = "http://52.53.219.240/putph.php";
+            HttpClient httpClient = new DefaultHttpClient();
+            HttpContext localContext = new BasicHttpContext();
+
+
+            String json = submit_to + "?" + "id=" + android_id + "&ph=" + 6.8;
             //String json = jsonObject.toString();
             Log.d(TAG, json);  //json sent
 
-            StringEntity se = new StringEntity(json);
-            httpPost.setEntity(se);
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+            //nameValuePairs.add(new BasicNameValuePair("id", android_id));
+            //nameValuePairs.add(new BasicNameValuePair("ph", "6"));
+
+            HttpPost httpPost = new HttpPost(submit_to + "?" + "id=" + android_id + "&ph=" + 6.8);
+            //StringEntity se = new StringEntity(json);
+            //httpPost.setEntity(se);
+            httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, "UTF-8"));
 
             //httpPost.setHeader("Accept", "application/json");
             //httpPost.setHeader("Content-type", "application/json");

@@ -11,6 +11,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import java.io.IOException;
+import java.util.List;
 
 /** A basic Camera preview class */
 public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
@@ -67,10 +68,22 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
         // set preview size and make any resize, rotate or
         // reformatting changes here
+        Camera.Parameters parameters = mCamera.getParameters();
+        List<Camera.Size> sizes = parameters.getSupportedPreviewSizes();
+        Camera.Size cs = sizes.get(9); //800*480 hardcoded for Nexus 5x
+        Log.d(TAG, cs.width + " " + cs.height);
+        //parameters.set("orientation", "portrait");
+        parameters.setPreviewSize(cs.width, cs.height);
+        //mCamera.setParameters(parameters);
 
+        //Camera.Parameters parameters = mCamera.getParameters();
+        parameters.setPictureSize(800, 480);
+        mCamera.setParameters(parameters);
         // start preview with new settings
         try {
             mCamera.setPreviewDisplay(mHolder);
+
+            mCamera.setDisplayOrientation(270);// TODO: needed only for test device
             mCamera.startPreview();
 
         } catch (Exception e){
