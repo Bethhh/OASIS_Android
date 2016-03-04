@@ -4,7 +4,6 @@ package com.bethyueshi.oasis2;
  * Created by http://www.androidhive.info/2012/07/android-gps-location-manager-tutorial/
  */
 
-
 import android.app.AlertDialog;
 import android.app.Service;
 import android.content.Context;

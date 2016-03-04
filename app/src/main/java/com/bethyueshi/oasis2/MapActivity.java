@@ -41,8 +41,6 @@ public class MapActivity extends FragmentActivity {
                 startActivity(intent);
             }
         });
-
     }
-
 }
 

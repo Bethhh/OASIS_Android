@@ -17,10 +17,9 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
+
 
 
 public class CameraActivity extends Activity {

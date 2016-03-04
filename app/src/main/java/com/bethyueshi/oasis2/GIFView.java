@@ -19,36 +19,36 @@ public class GIFView extends View {
     private Movie movie;
     private InputStream src = null;
     private long movieStart;
+
     public static final int HALF_GIF = 100;
     public int start = 100;
 
     public GIFView(Context context) {
         super(context);
+        setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 
         src = context.getResources().openRawResource(+R.drawable.t1);
         movie = Movie.decodeStream(src);
-        setLayerType(View.LAYER_TYPE_SOFTWARE, null);
     }
 
     public GIFView(Context context, AttributeSet attrs)
     {
         super(context, attrs);
+        setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 
         src = context.getResources().openRawResource(+R.drawable.t1);
         movie = Movie.decodeStream(src);
         start = attrs.getAttributeIntValue("http://schemas.android.com/apk/res/android", "layout_width", 100);
-        setLayerType(View.LAYER_TYPE_SOFTWARE, null);
     }
 
     public GIFView(Context context, AttributeSet attrs, int default_style)
     {
         super(context, attrs, default_style);
+        setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 
         src = context.getResources().openRawResource(+R.drawable.t1);
         movie = Movie.decodeStream(src);
         start = attrs.getAttributeIntValue("http://schemas.android.com/apk/res/android", "layout_width", 100);
-        setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-
     }
 
     /**
@@ -66,7 +66,6 @@ public class GIFView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        //Log.d("draw", "hehe");
         canvas.drawColor(Color.WHITE);
         super.onDraw(canvas);
 
@@ -83,6 +82,7 @@ public class GIFView extends View {
 
         canvas.scale(scaleX, scaleY);
 
+        //TODO figure out where to draw
         movie.draw(canvas, this.getWidth() / 2 - start, this.getHeight() / 2 - start);
 
         this.invalidate();
