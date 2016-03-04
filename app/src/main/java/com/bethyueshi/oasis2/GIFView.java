@@ -60,6 +60,10 @@ public class GIFView extends View {
         movie = Movie.decodeStream(src);
     }
 
+    public void setStart(int start){
+        this.start = start;
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
         //Log.d("draw", "hehe");

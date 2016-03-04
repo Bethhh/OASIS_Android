@@ -25,7 +25,8 @@ public class VideoFragment extends Fragment {
         return rootView;
     }
 
-    public void setGIF(int resId){
+    public void setGIF(int resId, int start){
         instr.setSrc(resId);
+        instr.setStart(start);
     }
 }

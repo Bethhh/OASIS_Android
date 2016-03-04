@@ -44,7 +44,7 @@ public class SelectTest extends FragmentActivity {
 
         VideoFragment vf = (VideoFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.video_instr);
-        vf.setGIF(currTest);
+        vf.setGIF(currTest, 600);
         //Get extras in intent from previous activity
         //Intent in = getIntent();
         //latitude = in.getDoubleExtra("lat", 0);
