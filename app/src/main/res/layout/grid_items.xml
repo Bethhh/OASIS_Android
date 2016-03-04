@@ -5,7 +5,7 @@
     android:layout_height="wrap_content">
 
     <com.bethyueshi.oasis2.GIFView
-        android:layout_width="110dp"
-        android:layout_height="110dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:id="@+id/test_pic" />
 </LinearLayout>

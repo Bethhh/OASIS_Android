@@ -1,10 +1,17 @@
 package com.bethyueshi.oasis2;
 
 import android.app.Activity;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
+
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,14 +21,15 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.support.v7.widget.RecyclerView;
 
 
-public class SelectTest extends Activity {
-    private Integer[] gifBtns = new Integer[9];
+public class SelectTest extends FragmentActivity {
+    private int[] gifBtns = new int[4];
 
     //private String android_id;
     private String[] testTextFiller = new String[]{"pH","Chlorine","Taste","Odor","Temperature","Mercury","Hardness","русский", "OASIS"};
-
+    private int currTest = R.drawable.t1;
 
     //double latitude = 0;
     //double longitude = 0;
@@ -34,6 +42,9 @@ public class SelectTest extends Activity {
         setContentView(R.layout.activity_select_test);
 
 
+        VideoFragment vf = (VideoFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.video_instr);
+        vf.setGIF(currTest);
         //Get extras in intent from previous activity
         //Intent in = getIntent();
         //latitude = in.getDoubleExtra("lat", 0);
@@ -49,57 +60,77 @@ public class SelectTest extends Activity {
         //        Settings.Secure.ANDROID_ID);
 
         // Get a reference to our ListView
-        GridView gridView = (GridView) findViewById(R.id.gridView);
+        //GridView gridView = (GridView) findViewById(R.id.gridView);
+
+        // get fragment manager
+        //FragmentManager fm = getSupportFragmentManager();
+
+        // add
+        //FragmentTransaction ft = fm.beginTransaction();
+
+        //Fragment fragment = new VideoFragment();
+        //Bundle args = new Bundle();
+        //args.putInt("resId", currTest);
+        //fragment.setArguments(args);
+
+        //ft.add(R.id.video_instr, fragment);
+        // alternatively add it with a tag
+        // trx.add(R.id.your_placehodler, new YourFragment(), "detail");
+        //ft.commit();
+
+        // replace
+        //FragmentTransaction ft = fm.beginTransaction();
+        //ft.replace(R.id.your_placehodler, new YourFragment());
+        //ft.commit();
+
+        // remove
+        //Fragment fragment = fm.findFragmentById(R.id.your_placehodler);
+        //FragmentTransaction ft = fm.beginTransaction();
+        //ft.remove(fragment);
+        //ft.commit();
+
+        RecyclerView testListView = (RecyclerView) findViewById(R.id.testRecyclerView);
+
+
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        testListView.setHasFixedSize(true);
+
+        // use a linear layout manager
+        LinearLayoutManager layoutManager
+                = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        testListView.setLayoutManager(layoutManager);
+
+
 
         gifBtns[0] = R.drawable.t1;
         gifBtns[1] = R.drawable.t1;
         gifBtns[2] = R.drawable.t1;
         gifBtns[3] = R.drawable.t1;
-        gifBtns[4] = R.drawable.t2;
-        gifBtns[5] = R.drawable.t2;
-        gifBtns[6] = R.drawable.t2;
-        gifBtns[7] = R.drawable.t2;
-        gifBtns[8] = R.drawable.t2;
+
 
         // Create the adapter passing a reference to the XML layout for each row
         // and a reference to the EditText (or TextView) in the item XML layout
-        ArrayAdapter adapter = new ArrayAdapter(SelectTest.this, R.layout.grid_items, gifBtns) {
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                View row = convertView;
+        TestListAdapter adapter = new TestListAdapter(gifBtns);
 
-                if(row == null){
-                    //getting custom layout for the row
-                    LayoutInflater inflater = getLayoutInflater();//LayoutInflater.from(getActivity());
-                    row = inflater.inflate(R.layout.grid_items, parent, false);
-                }
-
-                //TextView testNameField = (TextView)row.findViewById(R.id.test_name);
-                GIFView picTop = (GIFView)row.findViewById(R.id.test_pic);
-
-                //Here put images of tests
-                //testNameField.setText(testTextFiller[position]);
-                picTop.setSrc((int)getItem(position));
-                // picBox.setImageBitmap(bitPic.get(position));
-                return row; //the row that ListView draws
-            }
-        };
+        // specify an adapter (see also next example)
+        testListView.setAdapter(adapter);
 
 
-        // Set the adapter on the List View
-        gridView.setAdapter(adapter);
+        testListView.addOnItemTouchListener(
+                new RecyclerItemClickListener(getApplicationContext(), new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        // do whatever
+                        //new UploadImgur(progressBar, img,
+                        //                latitude, longitude, timeStamp,
+                        //                android_id, SelectTest.this).execute();
+                        // TODO position
+                        Intent intent = new Intent(SelectTest.this, CameraActivity.class);
+                        startActivity(intent);
+                    }
+                })
+        );
 
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                //new UploadImgur(progressBar, img,
-                //                latitude, longitude, timeStamp,
-                //                android_id, SelectTest.this).execute();
-
-                Intent intent = new Intent(SelectTest.this, CameraActivity.class);
-                startActivity(intent);
-            }
-        });
     }
 }
