@@ -1,0 +1,35 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000"
+    tools:context=".CameraActivity">
+
+ <ProgressBar
+        android:id="@+id/barTimer"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_centerInParent="true"
+        android:max="60"
+        android:progressDrawable="@drawable/circular_progress_bar" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textTimer"
+        android:textColor="#ffffff"
+        android:layout_gravity="center_horizontal"
+        android:layout_centerInParent="true" />
+
+    <Button
+        android:id="@+id/button_capture"
+        android:text="Start"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_width="150dp"
+        android:layout_height="80dp"
+        android:layout_weight="0.00" />
+
+</RelativeLayout>

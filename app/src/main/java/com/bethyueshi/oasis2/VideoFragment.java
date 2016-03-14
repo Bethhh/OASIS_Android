@@ -29,7 +29,9 @@ public class VideoFragment extends Fragment implements View.OnClickListener {
     }
 
     public void setGIF(int resId, int start){
+        // GIF pic
         instr.setSrc(resId);
+        // Where to draw
         instr.setStart(start);
     }
 
@@ -38,7 +40,7 @@ public class VideoFragment extends Fragment implements View.OnClickListener {
         Log.d("instr", "there");
         switch (v.getId()) {
             case R.id.test_pic_large:
-                Intent intent = new Intent(getActivity(), CameraActivity.class);
+                Intent intent = new Intent(getActivity(), TimerActivity.class);
                 Log.d("instr", "here");
                 startActivity(intent);
                 break;
