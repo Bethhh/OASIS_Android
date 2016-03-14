@@ -8,8 +8,8 @@
  <ProgressBar
         android:id="@+id/barTimer"
         style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
+        android:layout_width="350dp"
+        android:layout_height="350dp"
         android:layout_gravity="center_horizontal"
         android:layout_centerInParent="true"
         android:max="60"
@@ -20,6 +20,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/textTimer"
         android:textColor="#ffffff"
+        android:textSize="60dp"
         android:layout_gravity="center_horizontal"
         android:layout_centerInParent="true" />
 

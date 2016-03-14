@@ -25,9 +25,10 @@ public class TimerActivity extends AppCompatActivity {
         barTimer = (ProgressBar)findViewById(R.id.barTimer);
         textTimer = (TextView)findViewById(R.id.textTimer);
 
-        Animation an = new RotateAnimation(0.0f, -90.0f, 200.0f, 200.0f);
+        Animation an = new RotateAnimation(0.0f, -90.0f, 450.0f, 450.0f);
         an.setFillAfter(true);
         barTimer.startAnimation(an);
+        barTimer.setMax(60 * wait);
         startTimer(wait);
     }
 
@@ -42,7 +43,7 @@ public class TimerActivity extends AppCompatActivity {
             @Override
             public void onTick(long leftTimeInMilliseconds) {
                 long seconds = leftTimeInMilliseconds / 1000;
-                barTimer.setProgress((int)(seconds / m));
+                barTimer.setProgress((int)seconds);
                 textTimer.setText(String.format("%02d", seconds / 60) + ":" +
                                   String.format("%02d", seconds % 60));
                 // format the textview to show the easily readable format
