@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 public class TimerActivity extends AppCompatActivity {
     private ProgressBar barTimer;
+    private ProgressBar barTimerGrey;
     private TextView textTimer;
     private CountDownTimer countDownTimer;
     private int wait = 6; // minutes to wait
@@ -26,12 +27,20 @@ public class TimerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_timer);
 
         barTimer = (ProgressBar)findViewById(R.id.barTimer);
+        barTimerGrey = (ProgressBar)findViewById(R.id.barTimerGrey);
         textTimer = (TextView)findViewById(R.id.textTimer);
 
-        Animation an = new RotateAnimation(0.0f, -90.0f, 450.0f, 450.0f);
-        an.setFillAfter(true);
-        barTimer.startAnimation(an);
+
+
+        //Animation an = new RotateAnimation(0.0f, -90.0f, 450.0f, 450.0f);
+        //an.setFillAfter(true);
+        //barTimer.startAnimation(an);
         barTimer.setMax(60 * wait);
+
+        //barTimer.startAnimation(an);
+        barTimerGrey.setMax(60);// same number as setProgress to make a full circle.
+        barTimerGrey.setProgress(60);
+
         startTimer(wait);
     }
 
