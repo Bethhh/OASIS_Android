@@ -1,5 +1,6 @@
 package com.bethyueshi.oasis2;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.design.widget.FloatingActionButton;
@@ -11,12 +12,13 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class TimerActivity extends AppCompatActivity {
     private ProgressBar barTimer;
-    private ProgressBar barTimerGrey;
+    private Button btnTimer;
     private TextView textTimer;
     private CountDownTimer countDownTimer;
     private int wait = 6; // minutes to wait
@@ -28,10 +30,21 @@ public class TimerActivity extends AppCompatActivity {
 
         barTimer = (ProgressBar)findViewById(R.id.barTimer);
         textTimer = (TextView)findViewById(R.id.textTimer);
+        btnTimer = (Button)findViewById(R.id.button_start);
 
         barTimer.setMax(60 * wait);
         barTimer.setProgress(60 * wait);
-        startTimer(wait);
+        barTimer.setSecondaryProgress(60 * wait);
+        textTimer.setText(wait + ":00");
+
+        btnTimer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startTimer(wait);
+                btnTimer.setEnabled(false);
+                btnTimer.setVisibility(View.INVISIBLE);
+            }
+        });
     }
 
     public void setWaitTime(int m){
@@ -54,7 +67,8 @@ public class TimerActivity extends AppCompatActivity {
             @Override
             public void onFinish() {
                 if(textTimer.getText().equals("00:00")){
-                    textTimer.setText("STOP");
+                    Intent intent = new Intent(TimerActivity.this, CameraActivity.class);
+                    startActivity(intent);
                 }
                 else{
                     textTimer.setText(wait + ":00");
