@@ -41,6 +41,7 @@ public class VideoFragment extends Fragment implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.test_pic_large:
                 Intent intent = new Intent(getActivity(), TimerActivity.class);
+                intent.putExtra("test_num", getActivity().getIntent().getIntExtra("test_num", 0));
                 Log.d("instr", "here");
                 startActivity(intent);
                 break;

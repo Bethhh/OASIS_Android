@@ -69,6 +69,7 @@ public class TimerActivity extends AppCompatActivity {
             public void onFinish() {
                 if(textTimer.getText().equals("00:00")){
                     Intent intent = new Intent(TimerActivity.this, CameraActivity.class);
+                    intent.putExtra("test_num", getIntent().getIntExtra("test_num", 0));
                     startActivity(intent);
                 }
                 else{

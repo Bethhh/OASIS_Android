@@ -38,15 +38,17 @@ class UploadImgur extends AsyncTask<Void, Void, Integer> {
     private double longitude;
     private String timestamp;
     private String aid;
+    private int testNum;
     private Context ctx;
 
-    public UploadImgur(ProgressBar pb, String data, double lat, double lng, String ts, String a_id, Context context){
+    public UploadImgur(ProgressBar pb, String data, double lat, double lng, String ts, String a_id, int test_num, Context context){
         this.progressBar = pb;
         this.encodedImage = data;
         this.latitude = lat;
         this.longitude = lng;
         this.timestamp = ts;
         this.aid = a_id;
+        this.testNum = test_num;
         this.ctx = context.getApplicationContext();
     }
     protected void onPreExecute(){
@@ -106,10 +108,13 @@ class UploadImgur extends AsyncTask<Void, Void, Integer> {
     protected void onPostExecute(Integer status){
         progressBar.setVisibility(View.INVISIBLE);
         //Do somehting with status code TODO
-
-        Intent intent = new Intent(ctx, FeedbackActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        ctx.startActivity(intent);
+        if(testNum == SelectTest.TOTAL_TEST - 1) {
+            Intent intent = new Intent(ctx, FeedbackActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            ctx.startActivity(intent);
+        }else{
+            // TODO: let user know if the picture is upload successfully? or do we want to keep all photos and upload at the end?
+        }
     }
 
     private Integer prepareAndSendData(String url){

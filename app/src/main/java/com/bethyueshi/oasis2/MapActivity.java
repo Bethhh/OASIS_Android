@@ -15,6 +15,7 @@ public class MapActivity extends FragmentActivity {
 
     private MapPagerAdapter mMapPagerAdaper;
     private ViewPager mViewPager;
+    public static final int test0 = 0;
 
 
     @Override
@@ -38,6 +39,7 @@ public class MapActivity extends FragmentActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MapActivity.this, SelectTest.class);
+                intent.putExtra("test_num", test0);
                 startActivity(intent);
             }
         });

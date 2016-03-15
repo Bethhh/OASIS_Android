@@ -50,7 +50,7 @@ public class CameraActivity extends Activity {
                     @Override
                     public void onClick(View v) {
                         // get an image from the camera
-                        mCamera.takePicture(null, null, mPicture);
+                        mCamera.takePicture(null, null, mPicture);// TODO: detect box and take a picture immediately without pressing???
 
                         //time stamp
                         timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -87,8 +87,17 @@ public class CameraActivity extends Activity {
         encodedImage = Base64.encodeToString(data, Base64.DEFAULT);
         Log.d(TAG, encodedImage);
 
-        //Start Select Test
-        Intent intent = new Intent(CameraActivity.this, FeedbackActivity.class);
+        int testNum = getIntent().getIntExtra("test_num", 0);
+
+        Intent intent;
+        if(testNum == SelectTest.TOTAL_TEST - 1) {
+            //TODO: handle wait for the last upload.
+            intent = new Intent(CameraActivity.this, FeedbackActivity.class);
+            //intent.putExtra("test_num", getIntent().getIntExtra("test_num", 0));
+        }else{
+            intent = new Intent(CameraActivity.this, SelectTest.class);
+            intent.putExtra("test_num", getIntent().getIntExtra("test_num", 0) + 1);
+        }
 
         //intent.putExtra("lat", latitude);
         //intent.putExtra("lng", longitude);
@@ -97,7 +106,8 @@ public class CameraActivity extends Activity {
 
         new UploadImgur(progressBar, encodedImage,
                         latitude, longitude, timeStamp,
-                        android_id, CameraActivity.this).execute();
+                        android_id, testNum, CameraActivity.this).execute();
+
         startActivity(intent);
     }
 

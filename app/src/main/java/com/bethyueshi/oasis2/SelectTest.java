@@ -14,12 +14,17 @@ public class SelectTest extends FragmentActivity {
     private String[] testTextFiller = new String[]{"pH","Chlorine","Taste","Odor",
             "Temperature","Mercury","Hardness","русский", "OASIS"};
     private int currTest = R.drawable.t1;
+    private int testNum = 0;
+    public static final int TOTAL_TEST = 4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_test);
 
+        Intent intent = getIntent();
+        testNum = intent.getIntExtra("test_num", 0);
+        currTest = getTestVideo(testNum);
 
         VideoFragment vf = (VideoFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.video_instr);
@@ -62,5 +67,20 @@ public class SelectTest extends FragmentActivity {
                     }
                 })
         );
+    }
+
+    private int getTestVideo(int testNum){
+        switch(testNum){
+            case 0:
+                return R.drawable.t1;
+            case 1:
+                return R.drawable.t2;
+            case 2:
+                return R.drawable.t1;
+            case 3:
+                return R.drawable.t2;
+            default:
+                return R.drawable.t1;
+        }
     }
 }
