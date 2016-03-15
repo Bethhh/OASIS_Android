@@ -42,9 +42,9 @@ public class SelectTest extends FragmentActivity {
         testListView.setLayoutManager(layoutManager);
 
         gifBtns[0] = R.drawable.t1;
-        gifBtns[1] = R.drawable.t1;
+        gifBtns[1] = R.drawable.t2;
         gifBtns[2] = R.drawable.t1;
-        gifBtns[3] = R.drawable.t1;
+        gifBtns[3] = R.drawable.t2;
 
         // Create the adapter passing a reference to the XML layout for each row
         // and a reference to the EditText (or TextView) in the item XML layout
