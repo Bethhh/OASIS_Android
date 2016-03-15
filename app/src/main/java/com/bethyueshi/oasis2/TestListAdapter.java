@@ -59,7 +59,7 @@ public class TestListAdapter extends RecyclerView.Adapter<TestListAdapter.ViewHo
         // - replace the contents of the view with that element
 
         GradientDrawable gd = (GradientDrawable) holder.rl.getBackground();
-
+        //TODO move the selected test to the middle of the row
         if(position == testNum){
             //To change the stroke color
             //int width_px = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, youStrokeWidth, getResources().getDisplayMetrics());
