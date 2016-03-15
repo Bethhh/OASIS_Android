@@ -12,6 +12,25 @@
                 android:thicknessRatio="15.0"
                 android:useLevel="true">
                 <gradient
+                    android:startColor="#cccccc"
+                    android:endColor="#cccccc"
+                    android:centerColor="#cccccc"
+                    android:type="sweep" />
+            </shape>
+        </rotate>
+    </item>
+    <item android:id="@android:id/secondaryProgress">
+        <rotate
+            android:fromDegrees="270"
+            android:toDegrees="270"
+            android:pivotX="50%"
+            android:pivotY="50%" >
+            <shape
+                android:innerRadiusRatio="2.5"
+                android:shape="ring"
+                android:thicknessRatio="15.0"
+                android:useLevel="true">
+                <gradient
                     android:startColor="#0000FF"
                     android:endColor="#0000FF"
                     android:centerColor="#0000FF"

@@ -27,17 +27,10 @@ public class TimerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_timer);
 
         barTimer = (ProgressBar)findViewById(R.id.barTimer);
-        barTimerGrey = (ProgressBar)findViewById(R.id.barTimerGrey);
         textTimer = (TextView)findViewById(R.id.textTimer);
 
-
-
-
         barTimer.setMax(60 * wait);
-        
-        barTimerGrey.setMax(60);// same number as setProgress to make a full circle.
-        barTimerGrey.setProgress(60);
-
+        barTimer.setProgress(60 * wait);
         startTimer(wait);
     }
 
@@ -52,7 +45,7 @@ public class TimerActivity extends AppCompatActivity {
             @Override
             public void onTick(long leftTimeInMilliseconds) {
                 long seconds = leftTimeInMilliseconds / 1000;
-                barTimer.setProgress((int)seconds);
+                barTimer.setSecondaryProgress((int)seconds);
                 textTimer.setText(String.format("%02d", seconds / 60) + ":" +
                                   String.format("%02d", seconds % 60));
                 // format the textview to show the easily readable format
@@ -65,7 +58,7 @@ public class TimerActivity extends AppCompatActivity {
                 }
                 else{
                     textTimer.setText(wait + ":00");
-                    barTimer.setProgress(60 * m);
+                    barTimer.setSecondaryProgress(60 * m);
                 }
             }
         }.start();
