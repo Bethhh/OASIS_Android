@@ -4,9 +4,17 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.bethyueshi.oasis2.GIFView
-        android:layout_width="400dp"
-        android:layout_height="400dp"
-        android:id="@+id/test_pic_large" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:background="@drawable/layout_border">
+
+        <com.bethyueshi.oasis2.GIFView
+            android:layout_width="400dp"
+            android:layout_height="400dp"
+            android:id="@+id/test_pic_large" />
+
+    </RelativeLayout>
 
 </LinearLayout>
