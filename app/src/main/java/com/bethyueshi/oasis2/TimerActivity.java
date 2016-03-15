@@ -22,6 +22,7 @@ public class TimerActivity extends AppCompatActivity {
     private TextView textTimer;
     private CountDownTimer countDownTimer;
     private int wait = 1; // minutes to wait
+    public static final int SIXTY = 10; //TODO change it back to 60
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,9 +33,9 @@ public class TimerActivity extends AppCompatActivity {
         textTimer = (TextView)findViewById(R.id.textTimer);
         btnTimer = (Button)findViewById(R.id.button_start);
 
-        barTimer.setMax(60 * wait);
-        barTimer.setProgress(60 * wait);
-        barTimer.setSecondaryProgress(60 * wait);
+        barTimer.setMax(SIXTY * wait);
+        barTimer.setProgress(SIXTY * wait);
+        barTimer.setSecondaryProgress(SIXTY * wait);
         textTimer.setText(wait + ":00");
 
         btnTimer.setOnClickListener(new View.OnClickListener() {
@@ -52,15 +53,15 @@ public class TimerActivity extends AppCompatActivity {
     }
 
     private void startTimer(final int m) {
-        countDownTimer = new CountDownTimer(60 * m * 1000, 100) {
+        countDownTimer = new CountDownTimer(SIXTY * m * 1000, 100) {
             // 500 means, onTick function will be called at every 500 milliseconds
 
             @Override
             public void onTick(long leftTimeInMilliseconds) {
                 long seconds = leftTimeInMilliseconds / 1000;
                 barTimer.setSecondaryProgress((int)seconds);
-                textTimer.setText(String.format("%02d", seconds / 60) + ":" +
-                                  String.format("%02d", seconds % 60));
+                textTimer.setText(String.format("%02d", seconds / SIXTY) + ":" +
+                                  String.format("%02d", seconds % SIXTY));
                 // format the textview to show the easily readable format
             }
 
@@ -72,7 +73,7 @@ public class TimerActivity extends AppCompatActivity {
                 }
                 else{
                     textTimer.setText(wait + ":00");
-                    barTimer.setSecondaryProgress(60 * m);
+                    barTimer.setSecondaryProgress(SIXTY * m);
                 }
             }
         }.start();

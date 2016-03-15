@@ -20,70 +20,28 @@ import android.widget.ProgressBar;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-
-
 public class CameraActivity extends Activity {
 
     private Camera mCamera;
     private CameraPreview mPreview;
 
     private static final String TAG = "Camera";
+    public static final int MY_PERMISSIONS_REQUEST_CAMERA = 1;
+
     double latitude;
     double longitude;
     String timeStamp;
     String encodedImage = "";
-    public static final int MY_PERMISSIONS_REQUEST_CAMERA = 1;
+    private String android_id;
 
     ProgressBar progressBar;
-    private String android_id;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
 
-        // Here, thisActivity is the current activity
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.CAMERA)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            // Should we show an explanation?
-            //if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-             //       Manifest.permission.CAMERA)) {
-
-                // Show an expanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
-
-            //} else {
-            Log.d(TAG, "no permission request");
-
-                // No explanation needed, we can request the permission.
-
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.CAMERA},
-                        MY_PERMISSIONS_REQUEST_CAMERA);
-
-                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
-            //}
-        }else{
-            getCameraInstance();
-            if(mCamera == null){
-                Log.d(TAG, "hahaCamerddddda is null");
-            }
-        }
-
-
-        if(mCamera == null){
-            Log.d(TAG, "hahaCdfdfdfdffamerddddda is null");
-        }
-
-
-        //Camera.Parameters parameters = mCamera.getParameters();
-        //parameters.setPictureSize(480, 800);
-        //mCamera.setParameters(parameters);
+        initializeCamera();
 
         // Add a listener to the Capture button
         Button captureButton = (Button) findViewById(R.id.button_capture);
@@ -154,21 +112,12 @@ public class CameraActivity extends Activity {
         }
     }
 
-    private void releaseCameraAndPreview() {
-        //mPreview.setCamera(null);
-        if (mCamera != null) {
-            mCamera.release();
-            //mCamera = null;
-        }
-    }
-
     /** A safe way to get an instance of the Camera object. */
-    public void getCameraInstance() {
+    private void getCameraInstance() {
         releaseCameraAndPreview();
 
         int num = Camera.getNumberOfCameras();
         try {
-
             mCamera = Camera.open(); // attempt to get a Camera instance TODO check front/back camera
             if (mCamera == null)
                 Log.d(TAG, "Camerad is null" + num + "hello");
@@ -184,19 +133,68 @@ public class CameraActivity extends Activity {
         mPreview = new CameraPreview(this, mCamera);
         FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview);
         preview.addView(mPreview);
+    }
 
+    private void initializeCamera() {
+        // Here, thisActivity is the current activity
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            //if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+            //       Manifest.permission.CAMERA)) {
+
+            // Show an expanation to the user *asynchronously* -- don't block
+            // this thread waiting for the user's response! After the user
+            // sees the explanation, try again to request the permission.
+
+            //} else {
+            Log.d(TAG, "no permission request");
+
+            // No explanation needed, we can request the permission.
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.CAMERA},
+                    MY_PERMISSIONS_REQUEST_CAMERA);
+
+            // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+            // app-defined int constant. The callback method gets the
+            // result of the request.
+            //}
+        }else{
+            getCameraInstance();
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        releaseCamera();              // release the camera immediately on pause event
+        releaseCameraAndPreview(); //release the camera immediately on pause event
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        //releaseCameraAndPreview();              // release the camera immediately on pause event
+    }
 
-    private void releaseCamera(){
-        if (mCamera != null){
-            mCamera.release();        // release the camera for other applications
+    @Override
+    public void onResume() {
+        super.onResume();  // Always call the superclass method first
+
+        // Get the Camera instance as the activity achieves full user focus
+        if (mCamera == null) {
+            getCameraInstance(); // Local method to handle camera init
+        }
+    }
+
+    private void releaseCameraAndPreview() {
+        if(mPreview != null) {
+            mPreview.setCamera(null);
+        }
+        if (mCamera != null) {
+            mCamera.release(); // release the camera for other applications
             mCamera = null;
         }
     }
@@ -219,10 +217,8 @@ public class CameraActivity extends Activity {
                         Log.d(TAG, "Camerddddda is null");
                     }
 
-
-
                 } else {
-//TODO
+                    //TODO
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
                 }
