@@ -21,7 +21,7 @@ public class TimerActivity extends AppCompatActivity {
     private Button btnTimer;
     private TextView textTimer;
     private CountDownTimer countDownTimer;
-    private int wait = 6; // minutes to wait
+    private int wait = 1; // minutes to wait
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

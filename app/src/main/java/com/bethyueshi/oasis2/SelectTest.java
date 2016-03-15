@@ -57,8 +57,8 @@ public class SelectTest extends FragmentActivity {
                         //                latitude, longitude, timeStamp,
                         //                android_id, SelectTest.this).execute();
                         // TODO position
-                        Intent intent = new Intent(SelectTest.this, CameraActivity.class);
-                        startActivity(intent);
+                        //Intent intent = new Intent(SelectTest.this, CameraActivity.class);
+                        //startActivity(intent);
                     }
                 })
         );
