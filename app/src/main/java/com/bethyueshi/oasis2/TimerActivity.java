@@ -32,12 +32,9 @@ public class TimerActivity extends AppCompatActivity {
 
 
 
-        //Animation an = new RotateAnimation(0.0f, -90.0f, 450.0f, 450.0f);
-        //an.setFillAfter(true);
-        //barTimer.startAnimation(an);
-        barTimer.setMax(60 * wait);
 
-        //barTimer.startAnimation(an);
+        barTimer.setMax(60 * wait);
+        
         barTimerGrey.setMax(60);// same number as setProgress to make a full circle.
         barTimerGrey.setProgress(60);
 
