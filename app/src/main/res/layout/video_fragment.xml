@@ -8,6 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
+        android:id="@+id/fragment_bg"
         android:background="@drawable/layout_border">
 
         <com.bethyueshi.oasis2.GIFView

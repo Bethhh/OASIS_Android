@@ -61,16 +61,16 @@ public class TimerActivity extends AppCompatActivity {
     public void setTimer(int testNum){
         switch(testNum){
             case 0:
-                wait = 0.5;
-                break;
-            case 1:
                 wait = 0.1;
                 break;
-            case 2:
+            case 1:
                 wait = 0.3;
                 break;
-            case 3:
+            case 2:
                 wait = 0.2;
+                break;
+            case 3:
+                wait = 0.5;
                 break;
             default:
                 wait = 1;

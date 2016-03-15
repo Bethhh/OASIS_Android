@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.View;
 import android.support.v7.widget.RecyclerView;
 
@@ -25,6 +26,8 @@ public class SelectTest extends FragmentActivity {
         Intent intent = getIntent();
         testNum = intent.getIntExtra("test_num", 0);
         currTest = getTestVideo(testNum);
+
+        Log.d("testNum", " " + testNum);
 
         VideoFragment vf = (VideoFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.video_instr);
@@ -48,7 +51,7 @@ public class SelectTest extends FragmentActivity {
 
         // Create the adapter passing a reference to the XML layout for each row
         // and a reference to the EditText (or TextView) in the item XML layout
-        TestListAdapter adapter = new TestListAdapter(gifBtns);
+        TestListAdapter adapter = new TestListAdapter(gifBtns, testNum);
         // specify an adapter (see also next example)
         testListView.setAdapter(adapter);
 
@@ -82,5 +85,9 @@ public class SelectTest extends FragmentActivity {
             default:
                 return R.drawable.t1;
         }
+    }
+
+    public int getTestNum(){
+        return this.testNum;
     }
 }
