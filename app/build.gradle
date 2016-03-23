@@ -27,3 +27,11 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:23.1.0'
     compile project(':libs:ViewPageIndicator')
 }
+
+repositories {
+    maven { url "https://jitpack.io" }
+}
+
+dependencies {
+    compile 'com.github.PhilJay:MPAndroidChart:v2.2.3'
+}
