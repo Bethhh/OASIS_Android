@@ -42,6 +42,7 @@ public class SelectTest extends FragmentActivity {
         // use a linear layout manager
         LinearLayoutManager layoutManager
                 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        layoutManager.scrollToPosition(testNum);
         testListView.setLayoutManager(layoutManager);
 
         gifBtns[0] = R.drawable.t1;

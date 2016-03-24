@@ -5,6 +5,7 @@ package com.bethyueshi.oasis2;
  */
 
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -62,6 +63,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         if (mCamera != null) {
             // Call stopPreview() to stop updating the preview surface.
             mCamera.stopPreview();
+            //TODO turn off flashlight?
 
             // Important: Call release() to release the camera for use by other
             // applications. Applications should release the camera immediately
@@ -118,6 +120,13 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
         //Camera.Parameters parameters = mCamera.getParameters();
         parameters.setPictureSize(800, 480);
+
+        if(getContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)){
+            parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
+            parameters.setFlashMode(Camera.Parameters.FLASH_MODE_ON);
+            //params.setFlashMode(Parameters.FLASH_MODE_OFF);
+        }
+
         mCamera.setParameters(parameters);
         // start preview with new settings
         try {
