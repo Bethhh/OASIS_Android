@@ -17,14 +17,20 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <Button
-            android:id="@+id/button_capture"
-            android:text="Capture"
+
+        <ImageButton
+            android:id="@+id/image_capture"
             android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"
-            android:layout_width="150dp"
-            android:layout_height="80dp"
-            android:layout_weight="0.00" />
+            android:layout_marginBottom="20dp"
+            android:layout_weight="0.00"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:scaleType="fitXY"
+            android:alpha=".75"
+            android:background="@null"
+            android:src="@drawable/capture2" />
+
         <ProgressBar
             style="?android:attr/progressBarStyleLarge"
             android:layout_width="wrap_content"

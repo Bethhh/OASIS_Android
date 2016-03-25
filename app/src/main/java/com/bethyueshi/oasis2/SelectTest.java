@@ -57,20 +57,14 @@ public class SelectTest extends FragmentActivity {
         testListView.setAdapter(adapter);
 
 
-        testListView.addOnItemTouchListener(
-                new RecyclerItemClickListener(getApplicationContext(), new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(View view, int position) {
-                        // do whatever
-                        //new UploadImgur(progressBar, img,
-                        //                latitude, longitude, timeStamp,
-                        //                android_id, SelectTest.this).execute();
-                        // TODO position
-                        //Intent intent = new Intent(SelectTest.this, CameraActivity.class);
-                        //startActivity(intent);
-                    }
-                })
-        );
+//        testListView.addOnItemTouchListener(
+//                new RecyclerItemClickListener(getApplicationContext(), new RecyclerItemClickListener.OnItemClickListener() {
+//                    @Override
+//                    public void onItemClick(View view, int position) {
+//
+//                    }
+//                })
+//        );
     }
 
     private int getTestVideo(int testNum){
