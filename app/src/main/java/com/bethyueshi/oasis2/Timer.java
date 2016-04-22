@@ -32,7 +32,7 @@ public class Timer {
                  int num, int step, Context ctx){
 
         this.barTimer = pb;
-        this.textTimer = btn;
+        this.textTimer = text;
         this.btnTimer = btn;
         this.ctx = ctx;
         this.step = step;
