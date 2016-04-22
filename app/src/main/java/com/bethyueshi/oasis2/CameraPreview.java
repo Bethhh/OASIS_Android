@@ -112,14 +112,14 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         // reformatting changes here
         Camera.Parameters parameters = mCamera.getParameters();
         List<Camera.Size> sizes = parameters.getSupportedPreviewSizes();
-        Camera.Size cs = sizes.get(9); //800*480 hardcoded for Nexus 5x
-        Log.d(TAG, cs.width + " " + cs.height);
+        ////Camera.Size cs = sizes.get(9); //800*480 hardcoded for Nexus 5x
+        ////Log.d(TAG, cs.width + " " + cs.height);
         //parameters.set("orientation", "portrait");
-        parameters.setPreviewSize(cs.width, cs.height);
+        ////parameters.setPreviewSize(cs.width, cs.height);
         //mCamera.setParameters(parameters);
 
         //Camera.Parameters parameters = mCamera.getParameters();
-        parameters.setPictureSize(800, 480);
+        ////parameters.setPictureSize(800, 480);
 
         if(getContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)){
             parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
@@ -132,7 +132,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         try {
             mCamera.setPreviewDisplay(mHolder);
 
-            mCamera.setDisplayOrientation(270);// TODO: needed only for test device
+            mCamera.setDisplayOrientation(90);// TODO: needed only for test device
             mCamera.startPreview();
 
         } catch (Exception e) {

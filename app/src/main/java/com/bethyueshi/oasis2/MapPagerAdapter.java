@@ -31,19 +31,19 @@ public class MapPagerAdapter extends FragmentPagerAdapter implements IconPagerAd
         switch(pos) {
             case 1:
                 fragment = new MapFragment();
-                args.putString("url", "http://leafletjs.com/examples/mobile-example.html");
+                args.putString("url", "http://oasismap.herokuapp.com");
                 break;
             case 2:
                 fragment = new MapFragment();
-                args.putString("url", "http://leafletjs.com/examples/mobile-example.html");
+                args.putString("url", "http://oasismap.herokuapp.com");
                 break;
             case 3:
                 fragment = new MapFragment();
-                args.putString("url", "http://leafletjs.com/examples/mobile-example.html");
+                args.putString("url", "http://oasismap.herokuapp.com");
                 break;
             default:
                 fragment = new MapFragment();
-                args.putString("url", "http://leafletjs.com/examples/mobile-example.html");
+                args.putString("url", "http://oasismap.herokuapp.com");
                 break;
         }
         fragment.setArguments(args);
