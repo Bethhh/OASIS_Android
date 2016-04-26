@@ -110,7 +110,7 @@ public class CameraActivity extends Activity {
         if (volume != 0)
         {
             if (_shootMP == null)
-                _shootMP = MediaPlayer.create(getApplicationContext(), Uri.parse("file:///system/media/audio/ui/camera_click.ogg"));
+                _shootMP = MediaPlayer.create(getApplicationContext(), R.raw.alert);// Uri.parse("file:///system/media/audio/ui/camera_click.ogg"));
             if (_shootMP != null)
                 _shootMP.start();
         }

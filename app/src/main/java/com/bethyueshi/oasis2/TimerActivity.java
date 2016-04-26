@@ -43,6 +43,7 @@ public class TimerActivity extends AppCompatActivity {
         testNum = getIntent().getIntExtra("test_num", 0);
         Timer timer = new Timer(barTimer, textTimer, btnTimer, testNum, 1, getApplicationContext());
     }
+    //TODO get this method out (reuse it)
     private int getTestVideo(int testNum){
         switch(testNum){
             case 0:
