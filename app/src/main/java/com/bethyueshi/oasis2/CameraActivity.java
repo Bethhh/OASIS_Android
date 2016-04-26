@@ -42,15 +42,18 @@ public class CameraActivity extends Activity {
     ProgressBar progressBar;
 
     MediaPlayer _shootMP=null;
+    private ImageButton capture;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
 
+        capture = (ImageButton) findViewById(R.id.image_capture);
+
         initializeCamera();
 
-        ImageButton capture = (ImageButton) findViewById(R.id.image_capture);
+
         // Add a listener to the Capture button
         capture.setOnClickListener(
                 new View.OnClickListener() {
@@ -91,6 +94,7 @@ public class CameraActivity extends Activity {
 
         android_id = Settings.Secure.getString(getApplicationContext().getContentResolver(),
                 Settings.Secure.ANDROID_ID);
+
     }
 
     private Camera.PictureCallback mPicture = new Camera.PictureCallback() {
@@ -174,7 +178,7 @@ public class CameraActivity extends Activity {
         }
 
         // Create our Preview view and set it as the content of our activity.
-        mPreview = new CameraPreview(this, mCamera);
+        mPreview = new CameraPreview(this, mCamera, capture);
         FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview);
         preview.addView(mPreview);
     }

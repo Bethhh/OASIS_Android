@@ -10,6 +10,8 @@ import android.hardware.Camera;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.Button;
+import android.widget.ImageButton;
 
 import java.io.IOException;
 import java.util.List;
@@ -19,8 +21,9 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     private SurfaceHolder mHolder;
     private Camera mCamera;
     private static final String TAG = "CameraPreview";
+    private ImageButton shutter;
 
-    public CameraPreview(Context context, Camera camera) {
+    public CameraPreview(Context context, Camera camera, ImageButton shutter) {
         super(context);
         mCamera = camera;
         if(mCamera == null)
@@ -32,6 +35,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         mHolder.addCallback(this);
         // deprecated setting, but required on Android versions prior to 3.0
         mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+        this.shutter = shutter;
     }
 
     public void surfaceCreated(SurfaceHolder holder) {
@@ -92,6 +96,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
         if(mCamera != null) {
             setPreviewProperties();
+            shutter.performClick();
         }
     }
 
