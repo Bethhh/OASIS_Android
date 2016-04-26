@@ -6,6 +6,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
+import android.media.AudioManager;
+import android.media.MediaActionSound;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
@@ -36,6 +40,8 @@ public class CameraActivity extends Activity {
     private String android_id;
 
     ProgressBar progressBar;
+
+    MediaPlayer _shootMP=null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -91,9 +97,24 @@ public class CameraActivity extends Activity {
 
         @Override
         public void onPictureTaken(byte[] data, Camera camera) {
+            shootSound();
             upload(data);
         }
     };
+
+    public void shootSound()
+    {
+        AudioManager meng = (AudioManager) getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
+        int volume = meng.getStreamVolume( AudioManager.STREAM_NOTIFICATION);
+
+        if (volume != 0)
+        {
+            if (_shootMP == null)
+                _shootMP = MediaPlayer.create(getApplicationContext(), Uri.parse("file:///system/media/audio/ui/camera_click.ogg"));
+            if (_shootMP != null)
+                _shootMP.start();
+        }
+    }
 
     private void upload(byte[] data){
 

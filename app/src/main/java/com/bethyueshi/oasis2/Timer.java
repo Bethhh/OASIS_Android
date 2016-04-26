@@ -69,8 +69,8 @@ public class Timer {
     public void setTimer(int testNum, int step){//add steps TODO
         switch(testNum){
             case 0:
-                if(step == 0) wait = 0.5;
-                else wait = 1;
+                if(step == 0) wait = 0.1;
+                else wait = 0.1;
                 break;
             case 1:
                 wait = 0.3;

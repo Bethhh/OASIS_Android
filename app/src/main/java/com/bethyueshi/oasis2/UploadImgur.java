@@ -32,6 +32,19 @@ class UploadImgur extends AsyncTask<Void, Void, Integer> {
     private static final String TAG = "UploadImgur";
     private static final String API_KEY =  "271a72b8dd082c6"; //Imgur client ID
 
+    public static final String STR_SUBMIT_TO = "http://52.53.219.240/";
+    public static final String STR_PHP = ".php";
+    public static final String STR_PUT = "put";
+    public static final String STR_GET = "get";
+
+    public static final String STR_PH = "ph";
+    public static final String STR_PHOTO = "photo";
+    public static final String STR_GEO = "geo";
+    public static final String STR_LAT = "lat";
+    public static final String STR_LONG = "long";
+
+
+
     private ProgressBar progressBar;
     private String encodedImage;
     private double latitude;
@@ -116,10 +129,20 @@ class UploadImgur extends AsyncTask<Void, Void, Integer> {
             // TODO: let user know if the picture is upload successfully? or do we want to keep all photos and upload at the end?
         }
     }
+    private String genPostUrl(String androidId, String item, String val, String opt){
+
+        String add =  STR_SUBMIT_TO + STR_PUT + item + STR_PHP;
+        if(item == STR_GEO){
+            return add + "?" + "id=" + androidId +
+                               "&" + STR_LAT + "=" + val + "&" + STR_LONG + "=" + opt;
+        }else {
+            return add + "?" + "id=" + androidId + "&" + item + "=" + val;
+        }
+    }
 
     private Integer prepareAndSendData(String url){
         Integer status;
-        final String submit_to = "http://52.53.219.240/putph.php";
+
 
         try {
             String android_id = Secure.getString(ctx.getContentResolver(), Secure.ANDROID_ID);
@@ -141,32 +164,49 @@ class UploadImgur extends AsyncTask<Void, Void, Integer> {
             jsonObject.put("id", android_id);*/
 
 
-            String postURL = submit_to + "?" + "id=" + android_id + "&ph=" + 8.8;
-            Log.d(TAG, postURL);
+            String postURL_ph = genPostUrl(android_id, STR_PH, String.valueOf(8.8), null);
+            String postURL_photo = genPostUrl(android_id, STR_PHOTO, url, null);
+            String postURL_geo = genPostUrl(android_id, STR_GEO, String.valueOf(latitude),
+                                                                 String.valueOf(longitude));
+
+            Log.d(TAG, postURL_ph);
+            Log.d(TAG, postURL_photo);
+            Log.d(TAG, postURL_geo);
 
             HttpClient httpClient = new DefaultHttpClient();
             HttpContext localContext = new BasicHttpContext();
-            HttpPost httpPost = new HttpPost(postURL);
+            HttpPost httpPost_ph = new HttpPost("http://52.53.219.240/putph.php?id=ddf46d3eaf5ff1c7&ph=8.8");
+//            HttpPost httpPost_photo = new HttpPost(postURL_photo);
+//            HttpPost httpPost_geo = new HttpPost(postURL_geo);
 
             List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-            httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, "UTF-8"));
+            httpPost_ph.setEntity(new UrlEncodedFormEntity(nameValuePairs, "UTF-8"));
+//            httpPost_photo.setEntity(new UrlEncodedFormEntity(nameValuePairs, "UTF-8"));
+//            httpPost_geo.setEntity(new UrlEncodedFormEntity(nameValuePairs, "UTF-8"));
 
-            httpPost.setHeader("Accept", "application/x-www-form-urlencoded;charset=UTF-8");
-            httpPost.setHeader("Content-type", "application/x-www-form-urlencoded;charset=UTF-8");
+            httpPost_ph.setHeader("Accept", "application/x-www-form-urlencoded;charset=UTF-8");
+            httpPost_ph.setHeader("Content-type", "application/x-www-form-urlencoded;charset=UTF-8");
+//            httpPost_photo.setHeader("Accept", "application/x-www-form-urlencoded;charset=UTF-8");
+//            httpPost_photo.setHeader("Content-type", "application/x-www-form-urlencoded;charset=UTF-8");
+//            httpPost_geo.setHeader("Accept", "application/x-www-form-urlencoded;charset=UTF-8");
+//            httpPost_geo.setHeader("Content-type", "application/x-www-form-urlencoded;charset=UTF-8");
 
-            final HttpResponse response = httpClient.execute(httpPost, localContext);
-            final String response_string = EntityUtils.toString(response.getEntity());
-            Log.d("REST","response : "+ response_string);
+            final HttpResponse response_ph = httpClient.execute(httpPost_ph, localContext);
+            final String response_string_ph = EntityUtils.toString(response_ph.getEntity());
+            Log.d("REST", "response ph : " + response_string_ph);
+
+//            final HttpResponse response_photo = httpClient.execute(httpPost_photo, localContext);
+//            final String response_string_photo = EntityUtils.toString(response_photo.getEntity());
+//            Log.d("REST", "response photo : " + response_string_photo);
+//
+//            final HttpResponse response_geo = httpClient.execute(httpPost_geo, localContext);
+//            final String response_string_geo = EntityUtils.toString(response_geo.getEntity());
+//            Log.d("REST", "response geo : " + response_string_geo);
 
 
-            //if(response_string.charAt(response_string.length()-2)=='1'){
-            //    Log.d("Upload", "Successful POST");
-            //}else{
-            //    Log.d("Upload", "Failure" + response_string.charAt(response_string.length()-1));
-            //}
 
             //TODO status code
-            status = response.getStatusLine().getStatusCode();
+            status = response_ph.getStatusLine().getStatusCode();
             Log.d("REST","status : "+ status);
             return status;
 
