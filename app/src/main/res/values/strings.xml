@@ -7,4 +7,5 @@
     <string name="title_activity_feedback">FeedbackActivity</string>
     <string name="title_activity_map">MapActivity</string>
     <string name="title_activity_timer">TimerActivity</string>
+    <string name="title_activity_test_water">TestWater</string>
 </resources>

@@ -32,6 +32,10 @@ public class TimerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timer);
 
+        VideoFragment vf = (VideoFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.init_video_instr);
+        vf.setGIF(getTestVideo(testNum), 100);
+
         barTimer = (ProgressBar)findViewById(R.id.barTimer);
         textTimer = (TextView)findViewById(R.id.textTimer);
         btnTimer = (Button)findViewById(R.id.button_start);
@@ -39,9 +43,18 @@ public class TimerActivity extends AppCompatActivity {
         testNum = getIntent().getIntExtra("test_num", 0);
         Timer timer = new Timer(barTimer, textTimer, btnTimer, testNum, 1, getApplicationContext());
     }
-//    public void finished() {
-//        Intent intent = new Intent(TimerActivity.this, CameraActivity.class);
-//        intent.putExtra("test_num", testNum);
-//        startActivity(intent);
-//    }
+    private int getTestVideo(int testNum){
+        switch(testNum){
+            case 0:
+                return R.drawable.t1;
+            case 1:
+                return R.drawable.t2;
+            case 2:
+                return R.drawable.t1;
+            case 3:
+                return R.drawable.t2;
+            default:
+                return R.drawable.t1;
+        }
+    }
 }

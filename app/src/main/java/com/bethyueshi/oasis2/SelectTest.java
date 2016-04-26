@@ -31,7 +31,7 @@ public class SelectTest extends FragmentActivity {
 
         VideoFragment vf = (VideoFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.video_instr);
-        vf.setGIF(currTest, 600);
+        vf.setGIF(currTest, 300);
 
         RecyclerView testListView = (RecyclerView) findViewById(R.id.testRecyclerView);
 

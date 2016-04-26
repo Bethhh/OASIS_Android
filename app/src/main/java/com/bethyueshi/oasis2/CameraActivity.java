@@ -50,8 +50,20 @@ public class CameraActivity extends Activity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        mCamera.autoFocus(new Camera.AutoFocusCallback() {
+                            @Override
+                            public void onAutoFocus(boolean success, Camera camera) {
+                                if(success){
+                                    // get an image from the camera
+                                    mCamera.takePicture(null, null, mPicture);// TODO: detect box and take a picture immediately without pressing???
+
+                                }
+                            }
+                        });
+
                         // get an image from the camera
-                        mCamera.takePicture(null, null, mPicture);// TODO: detect box and take a picture immediately without pressing???
+                        //mCamera.takePicture(null, null, mPicture);// TODO: detect box and take a picture immediately without pressing???
+
 
                         //time stamp
                         timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
