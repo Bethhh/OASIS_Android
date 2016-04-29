@@ -33,15 +33,15 @@ public class CameraActivity extends Activity {
     private static final String TAG = "Camera";
     public static final int MY_PERMISSIONS_REQUEST_CAMERA = 1;
 
-    double latitude;
-    double longitude;
-    String timeStamp;
-    String encodedImage = "";
+    private double latitude;
+    private double longitude;
+    private String timeStamp;
+    private String encodedImage = "";
     private String android_id;
 
-    ProgressBar progressBar;
+    private ProgressBar progressBar;
 
-    MediaPlayer _shootMP=null;
+    private MediaPlayer _shootMP=null;
     private ImageButton capture;
 
     @Override

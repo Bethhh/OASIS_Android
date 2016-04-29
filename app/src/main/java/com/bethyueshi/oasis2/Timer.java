@@ -3,6 +3,9 @@ package com.bethyueshi.oasis2;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
@@ -29,6 +32,7 @@ public class Timer {
     private int testNum = 0;
     private int step = 0;
     private final Context ctx;
+    public MediaPlayer _shootMP = null;
 
     public Timer(ProgressBar pb, TextView text, Button btn,
                  int num, int step, Context ctx){
@@ -48,6 +52,17 @@ public class Timer {
         this.barTimer.setSecondaryProgress(seconds);
         this.textTimer.setText(String.format("%02d", (int) (Math.floor(wait))) + ":" +
                 String.format("%02d", seconds % SIXTY));
+
+        //shootSound();
+
+        AudioManager meng = (AudioManager) ctx.getSystemService(Context.AUDIO_SERVICE);
+        int volume = meng.getStreamVolume( AudioManager.STREAM_NOTIFICATION);
+
+        if (volume != 0)
+        {
+            if (_shootMP == null)
+                _shootMP = MediaPlayer.create(ctx, R.raw.ticking);
+        }
 
         //if(btnTimer != null) {
         //    this.btnTimer.setOnClickListener(new View.OnClickListener() {
@@ -89,6 +104,11 @@ public class Timer {
         seconds = (int)(SIXTY * wait);
     }
 
+//    public void shootSound()
+//    {
+//
+//    }
+
     private void startTimer(final double m) {
         countDownTimer = new CountDownTimer((int)(SIXTY * m * 1000), 100) {
             // 500 means, onTick function will be called at every 500 milliseconds
@@ -96,9 +116,11 @@ public class Timer {
             @Override
             public void onTick(long leftTimeInMilliseconds) {
                 long secs = leftTimeInMilliseconds / 1000;
-                barTimer.setSecondaryProgress((int)secs);
+                barTimer.setSecondaryProgress((int) secs);
                 textTimer.setText(String.format("%02d", secs / SIXTY) + ":" +
                         String.format("%02d", secs % SIXTY));
+                //shootSound();
+
                 // format the textview to show the easily readable format
             }
 
@@ -125,7 +147,7 @@ public class Timer {
                         barTimer.setSecondaryProgress(seconds);
                         textTimer.setText(String.format("%02d", (int) (Math.floor(wait))) + ":" +
                                 String.format("%02d", seconds % SIXTY));
-                        startTimer(wait);
+                        startTimer(wait); //TODO end it
                     }
                 }
                 else{

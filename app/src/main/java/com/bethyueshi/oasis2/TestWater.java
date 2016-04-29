@@ -22,6 +22,7 @@ public class TestWater extends AppCompatActivity {
     private int testNum = 0;
     private int currTest = R.drawable.t1;
     private Button btnDone;
+    private Timer timer;
 
 
     @Override
@@ -50,7 +51,10 @@ public class TestWater extends AppCompatActivity {
         });
 
 
-        Timer timer = new Timer(barTimer, textTimer, null, testNum, 0, getApplicationContext());
+        timer = new Timer(barTimer, textTimer, null, testNum, 0, getApplicationContext());
+
+        if (timer._shootMP != null)
+            timer._shootMP.start();
     }
 
     private int getTestVideo(int testNum){
@@ -66,6 +70,13 @@ public class TestWater extends AppCompatActivity {
             default:
                 return R.drawable.t1;
         }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (timer._shootMP != null)
+            timer._shootMP.stop();
     }
 
 }

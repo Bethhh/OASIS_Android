@@ -1,7 +1,10 @@
 package com.bethyueshi.oasis2;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.design.widget.FloatingActionButton;
@@ -26,6 +29,8 @@ public class TimerActivity extends AppCompatActivity {
     public static final int SIXTY = 60; //TODO change it back to 60
     private int seconds = (int)(SIXTY * wait);
     private int testNum = 0;
+    //private MediaPlayer _shootMP = null;
+    private Timer timer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +46,10 @@ public class TimerActivity extends AppCompatActivity {
         btnTimer = (Button)findViewById(R.id.button_start);
 
         testNum = getIntent().getIntExtra("test_num", 0);
-        Timer timer = new Timer(barTimer, textTimer, btnTimer, testNum, 1, getApplicationContext());
+        timer = new Timer(barTimer, textTimer, btnTimer, testNum, 1, getApplicationContext());
+
+        if (timer._shootMP != null)
+            timer._shootMP.start();
     }
     //TODO get this method out (reuse it)
     private int getTestVideo(int testNum){
@@ -57,5 +65,13 @@ public class TimerActivity extends AppCompatActivity {
             default:
                 return R.drawable.t1;
         }
+    }
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (timer._shootMP != null)
+            timer._shootMP.stop();
     }
 }

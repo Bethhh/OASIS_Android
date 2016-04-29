@@ -32,7 +32,7 @@ class UploadImgur extends AsyncTask<Void, Void, Integer> {
     private static final String TAG = "UploadImgur";
     private static final String API_KEY =  "271a72b8dd082c6"; //Imgur client ID
 
-    public static final String STR_SUBMIT_TO = "http://52.53.219.240/";
+    public static final String STR_SUBMIT_TO = "http://52.53.177.54/";
     public static final String STR_PHP = ".php";
     public static final String STR_PUT = "put";
     public static final String STR_GET = "get";
@@ -135,6 +135,8 @@ class UploadImgur extends AsyncTask<Void, Void, Integer> {
         if(item == STR_GEO){
             return add + "?" + "id=" + androidId +
                                "&" + STR_LAT + "=" + val + "&" + STR_LONG + "=" + opt;
+        }else if (item == STR_PHOTO) {
+            return add + "?" + "id=" + androidId + "&" + item + "='" + val + "'";
         }else {
             return add + "?" + "id=" + androidId + "&" + item + "=" + val;
         }
@@ -175,33 +177,33 @@ class UploadImgur extends AsyncTask<Void, Void, Integer> {
 
             HttpClient httpClient = new DefaultHttpClient();
             HttpContext localContext = new BasicHttpContext();
-            HttpPost httpPost_ph = new HttpPost("http://52.53.219.240/putph.php?id=ddf46d3eaf5ff1c7&ph=8.8");
-//            HttpPost httpPost_photo = new HttpPost(postURL_photo);
-//            HttpPost httpPost_geo = new HttpPost(postURL_geo);
+            HttpPost httpPost_ph = new HttpPost(postURL_ph);
+            HttpPost httpPost_photo = new HttpPost(postURL_photo);
+            HttpPost httpPost_geo = new HttpPost(postURL_geo);
 
             List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
             httpPost_ph.setEntity(new UrlEncodedFormEntity(nameValuePairs, "UTF-8"));
-//            httpPost_photo.setEntity(new UrlEncodedFormEntity(nameValuePairs, "UTF-8"));
-//            httpPost_geo.setEntity(new UrlEncodedFormEntity(nameValuePairs, "UTF-8"));
+            httpPost_photo.setEntity(new UrlEncodedFormEntity(nameValuePairs, "UTF-8"));
+            httpPost_geo.setEntity(new UrlEncodedFormEntity(nameValuePairs, "UTF-8"));
 
             httpPost_ph.setHeader("Accept", "application/x-www-form-urlencoded;charset=UTF-8");
             httpPost_ph.setHeader("Content-type", "application/x-www-form-urlencoded;charset=UTF-8");
-//            httpPost_photo.setHeader("Accept", "application/x-www-form-urlencoded;charset=UTF-8");
-//            httpPost_photo.setHeader("Content-type", "application/x-www-form-urlencoded;charset=UTF-8");
-//            httpPost_geo.setHeader("Accept", "application/x-www-form-urlencoded;charset=UTF-8");
-//            httpPost_geo.setHeader("Content-type", "application/x-www-form-urlencoded;charset=UTF-8");
+            httpPost_photo.setHeader("Accept", "application/x-www-form-urlencoded;charset=UTF-8");
+            httpPost_photo.setHeader("Content-type", "application/x-www-form-urlencoded;charset=UTF-8");
+            httpPost_geo.setHeader("Accept", "application/x-www-form-urlencoded;charset=UTF-8");
+            httpPost_geo.setHeader("Content-type", "application/x-www-form-urlencoded;charset=UTF-8");
 
             final HttpResponse response_ph = httpClient.execute(httpPost_ph, localContext);
             final String response_string_ph = EntityUtils.toString(response_ph.getEntity());
             Log.d("REST", "response ph : " + response_string_ph);
 
-//            final HttpResponse response_photo = httpClient.execute(httpPost_photo, localContext);
-//            final String response_string_photo = EntityUtils.toString(response_photo.getEntity());
-//            Log.d("REST", "response photo : " + response_string_photo);
-//
-//            final HttpResponse response_geo = httpClient.execute(httpPost_geo, localContext);
-//            final String response_string_geo = EntityUtils.toString(response_geo.getEntity());
-//            Log.d("REST", "response geo : " + response_string_geo);
+            final HttpResponse response_photo = httpClient.execute(httpPost_photo, localContext);
+            final String response_string_photo = EntityUtils.toString(response_photo.getEntity());
+            Log.d("REST", "response photo : " + response_string_photo);
+
+            final HttpResponse response_geo = httpClient.execute(httpPost_geo, localContext);
+            final String response_string_geo = EntityUtils.toString(response_geo.getEntity());
+            Log.d("REST", "response geo : " + response_string_geo);
 
 
 
