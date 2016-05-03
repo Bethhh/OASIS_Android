@@ -3,6 +3,7 @@ package com.bethyueshi.oasis2;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -39,6 +40,18 @@ public class TestWater extends AppCompatActivity {
         barTimer = (ProgressBar)findViewById(R.id.barTimer);
         textTimer = (TextView)findViewById(R.id.textTimer);
         btnDone = (Button)findViewById(R.id.button_done);
+        btnDone.setEnabled(false);
+
+        Handler mHandler = new Handler();
+
+        Runnable mRunnable = new Runnable() {
+            @Override
+            public void run() {
+                btnDone.setEnabled(true);
+            }
+        };
+
+
 
         this.btnDone.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,6 +64,8 @@ public class TestWater extends AppCompatActivity {
 
 
         timer = new Timer(barTimer, textTimer, testNum, 0, getApplicationContext());
+
+        mHandler.postDelayed(mRunnable, timer.getWaitSeconds()*1000);
 
 //        if (timer._shootMP != null)
 //            timer._shootMP.start();

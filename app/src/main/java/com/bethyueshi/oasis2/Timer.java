@@ -79,8 +79,8 @@ public class Timer {
         //}
     }
 
-    public void setWaitTime(double m){
-        this.wait = m;
+    public int getWaitSeconds(){
+        return this.seconds;
     }
 
     public void setTimer(int testNum, int step){//add steps TODO
