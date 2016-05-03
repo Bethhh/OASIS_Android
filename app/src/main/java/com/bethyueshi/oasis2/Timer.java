@@ -33,6 +33,7 @@ public class Timer {
     private int step = 0;
     private final Context ctx;
     public MediaPlayer _shootMP = null;
+    public MediaPlayer _shootMP2 = null;
 
     public Timer(ProgressBar pb, TextView text, //Button btn,
                  int num, int step, Context ctx){
@@ -60,6 +61,8 @@ public class Timer {
         {
             if (_shootMP == null)
                 _shootMP = MediaPlayer.create(ctx, R.raw.ticking);
+            if (_shootMP2 == null)
+                _shootMP2 = MediaPlayer.create(ctx, R.raw.tensecs);
         }
 
         if (_shootMP != null)
@@ -116,6 +119,11 @@ public class Timer {
                 // format the textview to show the easily readable format
                 textTimer.setText(String.format("%02d", secs / SIXTY) + ":" +
                         String.format("%02d", secs % SIXTY));
+                if(step == 1){
+                    if(secs <= 10 && _shootMP2 != null){
+                        _shootMP2.start();
+                    }
+                }
             }
 
             @Override
@@ -124,6 +132,9 @@ public class Timer {
                     if(step == 1) {
                         _shootMP.stop();
                         _shootMP.release();
+
+                        _shootMP2.stop();
+                        _shootMP2.release();
 
                         Intent intent = new Intent(ctx, CameraActivity.class);
                         intent.putExtra("test_num", testNum);
