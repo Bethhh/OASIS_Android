@@ -76,7 +76,7 @@ public class TestWater extends AppCompatActivity {
         super.onStop();
         if (timer._shootMP != null) {
             timer._shootMP.stop();
-            timer._shootMP.release();
+            //timer._shootMP.release();
         }
     }
 

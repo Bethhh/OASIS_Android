@@ -1,13 +1,16 @@
 package com.bethyueshi.oasis2;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 
 import com.github.mikephil.charting.charts.CombinedChart;
 import com.github.mikephil.charting.charts.CombinedChart.DrawOrder;
@@ -54,6 +57,8 @@ public class FeedbackActivity extends FragmentActivity {
             "Party Y", "Party Z"
     };
 
+    private Button btnBack;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +66,17 @@ public class FeedbackActivity extends FragmentActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_combined);
+
+        btnBack = (Button)findViewById(R.id.button_back);
+
+        this.btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(FeedbackActivity.this, MapActivity.class);
+                intent.putExtra("test_num", 0);
+                startActivity(intent);
+            }
+        });
 
         mChart = (CombinedChart) findViewById(R.id.chart1);
         mChart.setDescription("");
