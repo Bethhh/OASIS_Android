@@ -53,8 +53,6 @@ public class Timer {
         this.textTimer.setText(String.format("%02d", (int) (Math.floor(wait))) + ":" +
                 String.format("%02d", seconds % SIXTY));
 
-        //shootSound();
-
         AudioManager meng = (AudioManager) ctx.getSystemService(Context.AUDIO_SERVICE);
         int volume = meng.getStreamVolume( AudioManager.STREAM_NOTIFICATION);
 
@@ -63,6 +61,9 @@ public class Timer {
             if (_shootMP == null)
                 _shootMP = MediaPlayer.create(ctx, R.raw.ticking);
         }
+
+        if (_shootMP != null)
+            _shootMP.start();
 
         //if(btnTimer != null) {
         //    this.btnTimer.setOnClickListener(new View.OnClickListener() {
@@ -89,13 +90,13 @@ public class Timer {
                 else wait = 0.5;
                 break;
             case 1:
-                wait = 0.3;
+                wait = 0.1;
                 break;
             case 2:
-                wait = 0.2;
+                wait = 0.1;
                 break;
             case 3:
-                wait = 0.4;
+                wait = 0.1;
                 break;
             default:
                 wait = 1;
@@ -103,11 +104,6 @@ public class Timer {
 
         seconds = (int)(SIXTY * wait);
     }
-
-//    public void shootSound()
-//    {
-//
-//    }
 
     private void startTimer(final double m) {
         countDownTimer = new CountDownTimer((int)(SIXTY * m * 1000), 100) {
@@ -117,31 +113,25 @@ public class Timer {
             public void onTick(long leftTimeInMilliseconds) {
                 long secs = leftTimeInMilliseconds / 1000;
                 barTimer.setSecondaryProgress((int) secs);
+                // format the textview to show the easily readable format
                 textTimer.setText(String.format("%02d", secs / SIXTY) + ":" +
                         String.format("%02d", secs % SIXTY));
-                //shootSound();
-
-                // format the textview to show the easily readable format
             }
 
             @Override
             public void onFinish() {
                 if(textTimer.getText().equals("00:00")){
-//                    Intent intent = new Intent(TimerActivity.this, CameraActivity.class);
-//                    intent.putExtra("test_num", testNum);
-//                    startActivity(intent);
                     if(step == 1) {
-                        Intent intent;
-                        //if (step == 0) {
-                        //    intent = new Intent(ctx, TimerActivity.class);
-                        //} else { // 1
-                            intent = new Intent(ctx, CameraActivity.class);
-                        //}
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        _shootMP.stop();
+                        _shootMP.release();
+
+                        Intent intent = new Intent(ctx, CameraActivity.class);
                         intent.putExtra("test_num", testNum);
+
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         ctx.startActivity(intent);
                     }else{
-                        //do something
+                        // Resets timer
                         barTimer.setMax(seconds);
                         barTimer.setProgress(seconds);
                         barTimer.setSecondaryProgress(seconds);

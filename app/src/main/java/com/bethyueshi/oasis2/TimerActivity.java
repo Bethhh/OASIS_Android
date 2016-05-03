@@ -29,7 +29,6 @@ public class TimerActivity extends AppCompatActivity {
     public static final int SIXTY = 60; //TODO change it back to 60
     private int seconds = (int)(SIXTY * wait);
     private int testNum = 0;
-    //private MediaPlayer _shootMP = null;
     private Timer timer;
 
     @Override
@@ -48,9 +47,10 @@ public class TimerActivity extends AppCompatActivity {
         testNum = getIntent().getIntExtra("test_num", 0);
         timer = new Timer(barTimer, textTimer, testNum, 1, getApplicationContext());
 
-        if (timer._shootMP != null)
-            timer._shootMP.start();
+//        if (timer._shootMP != null)
+//            timer._shootMP.start();
     }
+
     //TODO get this method out (reuse it)
     private int getTestVideo(int testNum){
         switch(testNum){
@@ -67,11 +67,12 @@ public class TimerActivity extends AppCompatActivity {
         }
     }
 
-
     @Override
     protected void onStop() {
         super.onStop();
-        if (timer._shootMP != null)
-            timer._shootMP.stop();
+//        if (timer._shootMP != null){
+//            timer._shootMP.stop();
+//            timer._shootMP.release();
+//        }
     }
 }

@@ -24,7 +24,6 @@ public class TestWater extends AppCompatActivity {
     private Button btnDone;
     private Timer timer;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,8 +52,8 @@ public class TestWater extends AppCompatActivity {
 
         timer = new Timer(barTimer, textTimer, testNum, 0, getApplicationContext());
 
-        if (timer._shootMP != null)
-            timer._shootMP.start();
+//        if (timer._shootMP != null)
+//            timer._shootMP.start();
     }
 
     private int getTestVideo(int testNum){
@@ -75,8 +74,10 @@ public class TestWater extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        if (timer._shootMP != null)
+        if (timer._shootMP != null) {
             timer._shootMP.stop();
+            timer._shootMP.release();
+        }
     }
 
 }

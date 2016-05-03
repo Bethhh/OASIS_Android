@@ -67,6 +67,7 @@ class UploadImgur extends AsyncTask<Void, Void, Integer> {
         this.testNum = test_num;
         this.ctx = context.getApplicationContext();
     }
+
     protected void onPreExecute(){
         progressBar.setVisibility(View.VISIBLE);
         super.onPreExecute();
@@ -120,7 +121,8 @@ class UploadImgur extends AsyncTask<Void, Void, Integer> {
 
         return prepareAndSendData(ret);
     }
-    public void shootSound()
+
+    private void shootSound()
     {
         AudioManager meng = (AudioManager) ctx.getSystemService(Context.AUDIO_SERVICE);
         int volume = meng.getStreamVolume( AudioManager.STREAM_NOTIFICATION);
@@ -128,37 +130,31 @@ class UploadImgur extends AsyncTask<Void, Void, Integer> {
         if (volume != 0)
         {
             if (_shootMP == null)
-                _shootMP = MediaPlayer.create(ctx, R.raw.alert);// Uri.parse("file:///system/media/audio/ui/camera_click.ogg"));
+                _shootMP = MediaPlayer.create(ctx, R.raw.alert);
             if (_shootMP != null)
                 _shootMP.start();
         }
     }
+
     protected void onPostExecute(Integer status){
         progressBar.setVisibility(View.INVISIBLE);
-        //Do somehting with status code TODO
-//        if(testNum == SelectTest.TOTAL_TEST - 1) {
-//            Intent intent = new Intent(ctx, FeedbackActivity.class);
-//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//            ctx.startActivity(intent);
-//        }else{
-//            // TODO: let user know if the picture is upload successfully? or do we want to keep all photos and upload at the end?
-//        }
+
+        // TODO Do somehting with status code
+
         shootSound();
 
         Intent intent;
         if(testNum == SelectTest.TOTAL_TEST - 1) {
-            //TODO: handle wait for the last upload.
             intent = new Intent(ctx, FeedbackActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            ctx.startActivity(intent);
         }else{
             intent = new Intent(ctx, SelectTest.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.putExtra("test_num", testNum + 1);
         }
 
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         ctx.startActivity(intent);
     }
+
     private String genPostUrl(String androidId, String item, String val, String opt){
 
         String add =  STR_SUBMIT_TO + STR_PUT + item + STR_PHP;
@@ -168,33 +164,16 @@ class UploadImgur extends AsyncTask<Void, Void, Integer> {
         }else if (item == STR_PHOTO) {
             return add + "?" + "id='" + androidId + "'&" + item + "='" + val + "'";
         }else {
-            return add + "?" + "id=" + androidId + "&" + item + "=" + val;
+            return add + "?" + "id=" + androidId + "&" + item + "=" + val; // TODO update ph id in database
         }
     }
 
     private Integer prepareAndSendData(String url){
         Integer status;
 
-
         try {
             String android_id = Secure.getString(ctx.getContentResolver(), Secure.ANDROID_ID);
             Log.d("Android","Android ID : "+android_id);
-
-            //Test data
-            /*jsonObject.put("ph", 2);
-            jsonObject.put("chlorine", 3.0);
-            jsonObject.put("magnified_Link", url);
-            jsonObject.put("taste", "yucky");
-            jsonObject.put("odor", "smelly");
-            jsonObject.put("temperature", "77.0");
-            jsonObject.put("mercury", 234);
-            jsonObject.put("hardness", 9.0);
-            jsonObject.put("lat", latitude);
-            jsonObject.put("long", longitude);
-            jsonObject.put("timestamp", timestamp);
-            jsonObject.put("testdata", true);
-            jsonObject.put("id", android_id);*/
-
 
             String postURL_ph = genPostUrl(android_id, STR_PH, String.valueOf(8.8), null);
             String postURL_photo = genPostUrl(android_id, STR_PHOTO, url, null);
@@ -234,7 +213,6 @@ class UploadImgur extends AsyncTask<Void, Void, Integer> {
             final HttpResponse response_geo = httpClient.execute(httpPost_geo, localContext);
             final String response_string_geo = EntityUtils.toString(response_geo.getEntity());
             Log.d("REST", "response geo : " + response_string_geo);
-
 
 
             //TODO status code

@@ -16,7 +16,7 @@ public class SelectTest extends FragmentActivity {
             "Temperature","Mercury","Hardness","русский", "OASIS"};
     private int currTest = R.drawable.t1;
     private int testNum = 0;
-    public static final int TOTAL_TEST = 4;
+    public static final int TOTAL_TEST = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,9 +46,9 @@ public class SelectTest extends FragmentActivity {
         testListView.setLayoutManager(layoutManager);
 
         gifBtns[0] = R.drawable.testph;
-        gifBtns[1] = R.drawable.t2;
-        gifBtns[2] = R.drawable.t1;
-        gifBtns[3] = R.drawable.t2;
+        gifBtns[1] = R.drawable.testph;
+        gifBtns[2] = R.drawable.testph;
+        gifBtns[3] = R.drawable.testph;
 
         // Create the adapter passing a reference to the XML layout for each row
         // and a reference to the EditText (or TextView) in the item XML layout
