@@ -2,6 +2,8 @@ package com.bethyueshi.oasis2;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
@@ -53,6 +55,7 @@ class UploadImgur extends AsyncTask<Void, Void, Integer> {
     private String aid;
     private int testNum;
     private Context ctx;
+    private MediaPlayer _shootMP=null;
 
     public UploadImgur(ProgressBar pb, String data, double lat, double lng, String ts, String a_id, int test_num, Context context){
         this.progressBar = pb;
@@ -117,26 +120,53 @@ class UploadImgur extends AsyncTask<Void, Void, Integer> {
 
         return prepareAndSendData(ret);
     }
+    public void shootSound()
+    {
+        AudioManager meng = (AudioManager) ctx.getSystemService(Context.AUDIO_SERVICE);
+        int volume = meng.getStreamVolume( AudioManager.STREAM_NOTIFICATION);
 
+        if (volume != 0)
+        {
+            if (_shootMP == null)
+                _shootMP = MediaPlayer.create(ctx, R.raw.alert);// Uri.parse("file:///system/media/audio/ui/camera_click.ogg"));
+            if (_shootMP != null)
+                _shootMP.start();
+        }
+    }
     protected void onPostExecute(Integer status){
         progressBar.setVisibility(View.INVISIBLE);
         //Do somehting with status code TODO
+//        if(testNum == SelectTest.TOTAL_TEST - 1) {
+//            Intent intent = new Intent(ctx, FeedbackActivity.class);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//            ctx.startActivity(intent);
+//        }else{
+//            // TODO: let user know if the picture is upload successfully? or do we want to keep all photos and upload at the end?
+//        }
+        shootSound();
+
+        Intent intent;
         if(testNum == SelectTest.TOTAL_TEST - 1) {
-            Intent intent = new Intent(ctx, FeedbackActivity.class);
+            //TODO: handle wait for the last upload.
+            intent = new Intent(ctx, FeedbackActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             ctx.startActivity(intent);
         }else{
-            // TODO: let user know if the picture is upload successfully? or do we want to keep all photos and upload at the end?
+            intent = new Intent(ctx, SelectTest.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.putExtra("test_num", testNum + 1);
         }
+
+        ctx.startActivity(intent);
     }
     private String genPostUrl(String androidId, String item, String val, String opt){
 
         String add =  STR_SUBMIT_TO + STR_PUT + item + STR_PHP;
         if(item == STR_GEO){
-            return add + "?" + "id=" + androidId +
-                               "&" + STR_LAT + "=" + val + "&" + STR_LONG + "=" + opt;
+            return add + "?" + "id='" + androidId +
+                               "'&" + STR_LAT + "=" + val + "&" + STR_LONG + "=" + opt;
         }else if (item == STR_PHOTO) {
-            return add + "?" + "id=" + androidId + "&" + item + "='" + val + "'";
+            return add + "?" + "id='" + androidId + "'&" + item + "='" + val + "'";
         }else {
             return add + "?" + "id=" + androidId + "&" + item + "=" + val;
         }

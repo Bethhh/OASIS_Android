@@ -27,7 +27,7 @@ public class GIFView extends View {
         super(context);
         setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 
-        src = context.getResources().openRawResource(+R.drawable.t1);
+        src = context.getResources().openRawResource(+R.drawable.testph);
         movie = Movie.decodeStream(src);
     }
 
@@ -36,7 +36,7 @@ public class GIFView extends View {
         super(context, attrs);
         setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 
-        src = context.getResources().openRawResource(+R.drawable.t1);
+        src = context.getResources().openRawResource(+R.drawable.testph);
         movie = Movie.decodeStream(src);
         start = attrs.getAttributeIntValue("http://schemas.android.com/apk/res/android", "layout_width", 100);
     }
@@ -46,7 +46,7 @@ public class GIFView extends View {
         super(context, attrs, default_style);
         setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 
-        src = context.getResources().openRawResource(+R.drawable.t1);
+        src = context.getResources().openRawResource(+R.drawable.testph);
         movie = Movie.decodeStream(src);
         start = attrs.getAttributeIntValue("http://schemas.android.com/apk/res/android", "layout_width", 100);
     }
@@ -83,7 +83,7 @@ public class GIFView extends View {
         canvas.scale(scaleX, scaleY);
 
         //TODO figure out where to draw
-        movie.draw(canvas, this.getWidth() / 2 - start, this.getHeight() / 2 - start);
+        movie.draw(canvas, 0,0);
 
         this.invalidate();
     }

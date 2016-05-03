@@ -22,7 +22,7 @@ import android.widget.TextView;
 
 public class TimerActivity extends AppCompatActivity {
     private ProgressBar barTimer;
-    private Button btnTimer;
+    //private Button btnTimer;
     private TextView textTimer;
     private CountDownTimer countDownTimer;
     private double wait = 0.1; // minutes to wait
@@ -43,10 +43,10 @@ public class TimerActivity extends AppCompatActivity {
 
         barTimer = (ProgressBar)findViewById(R.id.barTimer);
         textTimer = (TextView)findViewById(R.id.textTimer);
-        btnTimer = (Button)findViewById(R.id.button_start);
+        //btnTimer = (Button)findViewById(R.id.button_start);
 
         testNum = getIntent().getIntExtra("test_num", 0);
-        timer = new Timer(barTimer, textTimer, btnTimer, testNum, 1, getApplicationContext());
+        timer = new Timer(barTimer, textTimer, testNum, 1, getApplicationContext());
 
         if (timer._shootMP != null)
             timer._shootMP.start();
@@ -55,15 +55,15 @@ public class TimerActivity extends AppCompatActivity {
     private int getTestVideo(int testNum){
         switch(testNum){
             case 0:
-                return R.drawable.t1;
+                return R.drawable.recordph;
             case 1:
-                return R.drawable.t2;
+                return R.drawable.recordph;
             case 2:
-                return R.drawable.t1;
+                return R.drawable.recordph;
             case 3:
-                return R.drawable.t2;
+                return R.drawable.recordph;
             default:
-                return R.drawable.t1;
+                return R.drawable.recordph;
         }
     }
 

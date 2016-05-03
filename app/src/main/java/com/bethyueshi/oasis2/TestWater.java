@@ -51,7 +51,7 @@ public class TestWater extends AppCompatActivity {
         });
 
 
-        timer = new Timer(barTimer, textTimer, null, testNum, 0, getApplicationContext());
+        timer = new Timer(barTimer, textTimer, testNum, 0, getApplicationContext());
 
         if (timer._shootMP != null)
             timer._shootMP.start();
@@ -60,15 +60,15 @@ public class TestWater extends AppCompatActivity {
     private int getTestVideo(int testNum){
         switch(testNum){
             case 0:
-                return R.drawable.t1;
+                return R.drawable.testph;
             case 1:
-                return R.drawable.t2;
+                return R.drawable.testph;
             case 2:
-                return R.drawable.t1;
+                return R.drawable.testph;
             case 3:
-                return R.drawable.t2;
+                return R.drawable.testph;
             default:
-                return R.drawable.t1;
+                return R.drawable.testph;
         }
     }
 

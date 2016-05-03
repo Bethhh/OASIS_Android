@@ -114,7 +114,7 @@ public class CameraActivity extends Activity {
         if (volume != 0)
         {
             if (_shootMP == null)
-                _shootMP = MediaPlayer.create(getApplicationContext(), R.raw.alert);// Uri.parse("file:///system/media/audio/ui/camera_click.ogg"));
+                _shootMP = MediaPlayer.create(getApplicationContext(), Uri.parse("file:///system/media/audio/ui/camera_click.ogg"));
             if (_shootMP != null)
                 _shootMP.start();
         }
@@ -127,15 +127,15 @@ public class CameraActivity extends Activity {
 
         int testNum = getIntent().getIntExtra("test_num", 0);
 
-        Intent intent;
-        if(testNum == SelectTest.TOTAL_TEST - 1) {
-            //TODO: handle wait for the last upload.
-            intent = new Intent(CameraActivity.this, FeedbackActivity.class);
-            //intent.putExtra("test_num", getIntent().getIntExtra("test_num", 0));
-        }else{
-            intent = new Intent(CameraActivity.this, SelectTest.class);
-            intent.putExtra("test_num", getIntent().getIntExtra("test_num", 0) + 1);
-        }
+//        Intent intent;
+//        if(testNum == SelectTest.TOTAL_TEST - 1) {
+//            //TODO: handle wait for the last upload.
+//            intent = new Intent(CameraActivity.this, FeedbackActivity.class);
+//            //intent.putExtra("test_num", getIntent().getIntExtra("test_num", 0));
+//        }else{
+//            intent = new Intent(CameraActivity.this, SelectTest.class);
+//            intent.putExtra("test_num", getIntent().getIntExtra("test_num", 0) + 1);
+//        }
 
         //intent.putExtra("lat", latitude);
         //intent.putExtra("lng", longitude);
@@ -146,7 +146,7 @@ public class CameraActivity extends Activity {
                         latitude, longitude, timeStamp,
                         android_id, testNum, CameraActivity.this).execute();
 
-        startActivity(intent);
+        //startActivity(intent);
     }
 
     /** Check if this device has a camera TODO maybe we need to call this*/

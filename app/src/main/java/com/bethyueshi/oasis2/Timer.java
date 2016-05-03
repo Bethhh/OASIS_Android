@@ -21,7 +21,7 @@ import android.widget.TextView;
 public class Timer {
 
     private ProgressBar barTimer;
-    private Button btnTimer;
+    //private Button btnTimer;
     private TextView textTimer;
 
     private CountDownTimer countDownTimer;
@@ -34,12 +34,12 @@ public class Timer {
     private final Context ctx;
     public MediaPlayer _shootMP = null;
 
-    public Timer(ProgressBar pb, TextView text, Button btn,
+    public Timer(ProgressBar pb, TextView text, //Button btn,
                  int num, int step, Context ctx){
 
         this.barTimer = pb;
         this.textTimer = text;
-        this.btnTimer = btn;
+        //this.btnTimer = btn;
         this.ctx = ctx;
         this.step = step;
 
@@ -85,8 +85,8 @@ public class Timer {
     public void setTimer(int testNum, int step){//add steps TODO
         switch(testNum){
             case 0:
-                if(step == 0) wait = 0.1;
-                else wait = 0.1;
+                if(step == 0) wait = 0.3;
+                else wait = 0.5;
                 break;
             case 1:
                 wait = 0.3;

@@ -45,7 +45,7 @@ public class SelectTest extends FragmentActivity {
         layoutManager.scrollToPosition(testNum);
         testListView.setLayoutManager(layoutManager);
 
-        gifBtns[0] = R.drawable.t1;
+        gifBtns[0] = R.drawable.testph;
         gifBtns[1] = R.drawable.t2;
         gifBtns[2] = R.drawable.t1;
         gifBtns[3] = R.drawable.t2;
@@ -70,15 +70,15 @@ public class SelectTest extends FragmentActivity {
     private int getTestVideo(int testNum){
         switch(testNum){
             case 0:
-                return R.drawable.t1;
+                return R.drawable.testph;
             case 1:
-                return R.drawable.t2;
+                return R.drawable.testph;
             case 2:
-                return R.drawable.t1;
+                return R.drawable.testph;
             case 3:
-                return R.drawable.t2;
+                return R.drawable.testph;
             default:
-                return R.drawable.t1;
+                return R.drawable.testph;
         }
     }
 
