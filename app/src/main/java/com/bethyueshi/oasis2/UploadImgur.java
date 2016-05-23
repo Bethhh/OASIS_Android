@@ -57,7 +57,8 @@ class UploadImgur extends AsyncTask<Void, Void, Integer> {
     private Context ctx;
     private MediaPlayer _shootMP=null;
 
-    public UploadImgur(ProgressBar pb, String data, double lat, double lng, String ts, String a_id, int test_num, Context context){
+    public UploadImgur(ProgressBar pb, String data, double lat, double lng,
+                       String ts, String a_id, int test_num, Context context){
         this.progressBar = pb;
         this.encodedImage = data;
         this.latitude = lat;

@@ -79,7 +79,7 @@ public class TestWater extends AppCompatActivity {
             case 0:
                 return R.drawable.testph;
             case 1:
-                return R.drawable.testph;
+                return R.drawable.testmetal;
             case 2:
                 return R.drawable.testph;
             case 3:

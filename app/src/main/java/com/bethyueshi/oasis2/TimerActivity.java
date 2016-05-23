@@ -36,6 +36,8 @@ public class TimerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timer);
 
+        testNum = getIntent().getIntExtra("test_num", 0);
+
         VideoFragment vf = (VideoFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.init_video_instr);
         vf.setGIF(getTestVideo(testNum), 100);
@@ -45,7 +47,6 @@ public class TimerActivity extends AppCompatActivity {
         textTimer = (TextView)findViewById(R.id.textTimer);
         //btnTimer = (Button)findViewById(R.id.button_start);
 
-        testNum = getIntent().getIntExtra("test_num", 0);
         timer = new Timer(barTimer, textTimer, testNum, 1, getApplicationContext());
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
