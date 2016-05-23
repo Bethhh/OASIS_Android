@@ -6,6 +6,7 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -35,6 +36,7 @@ public class TestWater extends AppCompatActivity {
         VideoFragment vf = (VideoFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.init_video_instr);
         vf.setGIF(getTestVideo(testNum), 100);
+        vf.setClickable(false);
 
 
         barTimer = (ProgressBar)findViewById(R.id.barTimer);
@@ -64,6 +66,7 @@ public class TestWater extends AppCompatActivity {
 
 
         timer = new Timer(barTimer, textTimer, testNum, 0, getApplicationContext());
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         mHandler.postDelayed(mRunnable, timer.getWaitSeconds()*1000);
 

@@ -61,6 +61,7 @@ public class Timer {
         {
             if (_shootMP == null)
                 _shootMP = MediaPlayer.create(ctx, R.raw.ticking);
+                _shootMP.setLooping(true);
             if (_shootMP2 == null)
                 _shootMP2 = MediaPlayer.create(ctx, R.raw.tensecs);
         }
@@ -89,11 +90,12 @@ public class Timer {
     public void setTimer(int testNum, int step){//add steps TODO
         switch(testNum){
             case 0:
-                if(step == 0) wait = 0.3;
-                else wait = 0.5;
+                if(step == 0) wait = 0.25;
+                else wait = 1;
                 break;
             case 1:
-                wait = 0.1;
+                if(step == 0) wait = 0.5;
+                wait = 2;
                 break;
             case 2:
                 wait = 0.1;

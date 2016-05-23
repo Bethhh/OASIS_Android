@@ -39,6 +39,7 @@ public class TimerActivity extends AppCompatActivity {
         VideoFragment vf = (VideoFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.init_video_instr);
         vf.setGIF(getTestVideo(testNum), 100);
+        vf.setClickable(false);
 
         barTimer = (ProgressBar)findViewById(R.id.barTimer);
         textTimer = (TextView)findViewById(R.id.textTimer);
@@ -46,6 +47,8 @@ public class TimerActivity extends AppCompatActivity {
 
         testNum = getIntent().getIntExtra("test_num", 0);
         timer = new Timer(barTimer, textTimer, testNum, 1, getApplicationContext());
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
 //        if (timer._shootMP != null)
 //            timer._shootMP.start();
