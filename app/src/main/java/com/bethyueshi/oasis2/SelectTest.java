@@ -10,13 +10,14 @@ import android.support.v7.widget.RecyclerView;
 
 
 public class SelectTest extends FragmentActivity {
-    private int[] gifBtns = new int[4];
+    public static final int TOTAL_TEST = 2;
+    private int[] gifBtns = new int[TOTAL_TEST];
 
     private String[] testTextFiller = new String[]{"pH","Chlorine","Taste","Odor",
             "Temperature","Mercury","Hardness","русский", "OASIS"};
     private int currTest = R.drawable.t1;
     private int testNum = 0;
-    public static final int TOTAL_TEST = 1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,9 +47,9 @@ public class SelectTest extends FragmentActivity {
         testListView.setLayoutManager(layoutManager);
 
         gifBtns[0] = R.drawable.testph;
-        gifBtns[1] = R.drawable.testph;
-        gifBtns[2] = R.drawable.testph;
-        gifBtns[3] = R.drawable.testph;
+        gifBtns[1] = R.drawable.testmetal;
+        //gifBtns[2] = R.drawable.testph;
+        //gifBtns[3] = R.drawable.testph;
 
         // Create the adapter passing a reference to the XML layout for each row
         // and a reference to the EditText (or TextView) in the item XML layout
@@ -72,7 +73,7 @@ public class SelectTest extends FragmentActivity {
             case 0:
                 return R.drawable.testph;
             case 1:
-                return R.drawable.testph;
+                return R.drawable.testmetal;
             case 2:
                 return R.drawable.testph;
             case 3:

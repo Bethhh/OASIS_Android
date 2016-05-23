@@ -60,7 +60,7 @@ public class TimerActivity extends AppCompatActivity {
             case 0:
                 return R.drawable.recordph;
             case 1:
-                return R.drawable.recordph;
+                return R.drawable.recordmetal;
             case 2:
                 return R.drawable.recordph;
             case 3:

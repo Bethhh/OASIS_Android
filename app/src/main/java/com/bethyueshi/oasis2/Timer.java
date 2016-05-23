@@ -95,7 +95,7 @@ public class Timer {
                 break;
             case 1:
                 if(step == 0) wait = 0.5;
-                wait = 2;
+                else wait = 2;
                 break;
             case 2:
                 wait = 0.1;
