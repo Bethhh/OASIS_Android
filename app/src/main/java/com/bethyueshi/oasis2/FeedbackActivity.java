@@ -5,12 +5,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.Spinner;
 
 import com.github.mikephil.charting.charts.CombinedChart;
 import com.github.mikephil.charting.charts.CombinedChart.DrawOrder;
@@ -36,7 +41,9 @@ import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 //import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 
 /**
@@ -59,6 +66,12 @@ public class FeedbackActivity extends FragmentActivity {
 
     private Button btnBack;
 
+    private double latitude;
+    private double longitude;
+    private String timeStamp;
+    private String android_id;
+    private ProgressBar progressBar;
+    private String[] values = new String[2];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,16 +80,99 @@ public class FeedbackActivity extends FragmentActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_combined);
 
+
+
+
+        timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+
+        //location
+        GPSTracker tracker = new GPSTracker(FeedbackActivity.this);
+        if (tracker.canGetLocation() == false) {
+            tracker.showSettingsAlert();
+        } else {
+            latitude = tracker.getLatitude();
+            longitude = tracker.getLongitude();
+            System.out.println(latitude + " here " + longitude);
+        }
+
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.INVISIBLE);
+
+        android_id = Settings.Secure.getString(getApplicationContext().getContentResolver(),
+                Settings.Secure.ANDROID_ID);
+
+
+
+
         btnBack = (Button)findViewById(R.id.button_back);
 
         this.btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(FeedbackActivity.this, MapActivity.class);
-                intent.putExtra("test_num", 0);
-                startActivity(intent);
+
+                new UploadValue(progressBar, values,
+                        latitude, longitude, timeStamp,
+                        android_id, FeedbackActivity.this).execute();
+
+
+//                Intent intent = new Intent(FeedbackActivity.this, MapActivity.class);
+//                intent.putExtra("test_num", 0);
+//                startActivity(intent);
             }
         });
+
+        final Spinner ph_dropdown = (Spinner)findViewById(R.id.ph_spinner);
+        final Spinner metal_dropdown = (Spinner)findViewById(R.id.metal_spinner);
+
+        ph_dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int pos, long id) {
+                // your code here
+
+                System.out.println("Spinner value...." + ph_dropdown.getSelectedItem().toString());
+                values[0] = ph_dropdown.getSelectedItem().toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+                values[0] = "0";
+            }
+
+        });
+
+        metal_dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int pos, long id) {
+                // your code here
+
+                System.out.println("Spinner value...." + metal_dropdown.getSelectedItem().toString());
+                values[1] = metal_dropdown.getSelectedItem().toString();
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+                values[1] = "0";
+            }
+
+        });
+
+
+        String[] ph_items = new String[]{"3.5", "4.0", "4.5", "5.0", "5.5", "6.0",
+                "6.5", "7.0", "7.5", "8.0", "8.5", "9.0",
+                "10", "11", "12", "13", "14", "0",
+                "0.5", "1.0", "1.5", "2.0", "2.5", "3.0"};
+        String[] metal_items = new String[]{"10", "20", "50", "100", "200", "400", "1000"};
+
+        ArrayAdapter<String> ph_adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_dropdown_item, ph_items);
+        ArrayAdapter<String> metal_adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_dropdown_item, metal_items);
+        ph_dropdown.setAdapter(ph_adapter);
+        metal_dropdown.setAdapter(metal_adapter);
+
 
         mChart = (CombinedChart) findViewById(R.id.chart1);
         mChart.setDescription("");
@@ -111,6 +207,9 @@ public class FeedbackActivity extends FragmentActivity {
         mChart.setData(data);
         mChart.invalidate();
     }
+
+
+
 
     private LineData generateLineData() {
 

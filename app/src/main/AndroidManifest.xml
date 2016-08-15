@@ -13,7 +13,8 @@
         android:required="true" />
 
     <!-- Allows access to the flashlight -->
-    <permission android:name="android.permission.FLASHLIGHT"
+    <permission
+        android:name="android.permission.FLASHLIGHT"
         android:permissionGroup="android.permission-group.HARDWARE_CONTROLS"
         android:protectionLevel="normal" />
 
@@ -81,6 +82,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.bethyueshi.oasis2.SelectTest" />
         </activity>
+        <activity
+            android:name=".Temp"
+            android:label="@string/title_activity_temp"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

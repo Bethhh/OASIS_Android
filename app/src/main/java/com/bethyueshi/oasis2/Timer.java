@@ -92,10 +92,14 @@ public class Timer {
             case 0:
                 if(step == 0) wait = 0.25;
                 else wait = 1;
+//                if(step == 0) wait = 0.1;
+//                else wait = 0.1;
                 break;
             case 1:
                 if(step == 0) wait = 0.5;
                 else wait = 2;
+//                if(step == 0) wait = 0.1;
+//                else wait = 0.1;
                 break;
             case 2:
                 wait = 0.1;
