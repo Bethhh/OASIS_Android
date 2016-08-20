@@ -62,11 +62,11 @@ public class CameraActivity extends Activity {
                         mCamera.autoFocus(new Camera.AutoFocusCallback() {
                             @Override
                             public void onAutoFocus(boolean success, Camera camera) {
-                                if(success){
+                                //if(success){
                                     // get an image from the camera
                                     mCamera.takePicture(null, null, mPicture);// TODO: detect box and take a picture immediately without pressing???
 
-                                }
+                                //}
                             }
                         });
 
