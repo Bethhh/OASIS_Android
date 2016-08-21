@@ -17,12 +17,7 @@ import android.widget.TextView;
 public class TestWater extends AppCompatActivity {
     private ProgressBar barTimer;
     private TextView textTimer;
-    private CountDownTimer countDownTimer;
-    private double wait = 0.1; // minutes to wait
-    public static final int SIXTY = 60; //TODO change it back to 60
-    private int seconds = (int)(SIXTY * wait);
     private int testNum = 0;
-    private int currTest = R.drawable.t1;
     private Button btnDone;
     private Timer timer;
 
@@ -33,9 +28,8 @@ public class TestWater extends AppCompatActivity {
 
         testNum = getIntent().getIntExtra("test_num", 0);
 
-        VideoFragment vf = (VideoFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.init_video_instr);
-        vf.setGIF(getTestVideo(testNum), 100);
+        VideoFragment vf = (VideoFragment) getSupportFragmentManager().findFragmentById(R.id.init_video_instr);
+        vf.setGIF(AppConfiguration.getTestVideo(testNum), 100);
         vf.setClickable(false);
 
 
@@ -53,8 +47,6 @@ public class TestWater extends AppCompatActivity {
             }
         };
 
-
-
         this.btnDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,24 +61,6 @@ public class TestWater extends AppCompatActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         mHandler.postDelayed(mRunnable, timer.getWaitSeconds()*1000);
-
-//        if (timer._shootMP != null)
-//            timer._shootMP.start();
-    }
-
-    private int getTestVideo(int testNum){
-        switch(testNum){
-            case 0:
-                return R.drawable.testph;
-            case 1:
-                return R.drawable.testmetal;
-            case 2:
-                return R.drawable.testph;
-            case 3:
-                return R.drawable.testph;
-            default:
-                return R.drawable.testph;
-        }
     }
 
     @Override
@@ -97,5 +71,4 @@ public class TestWater extends AppCompatActivity {
             //timer._shootMP.release();
         }
     }
-
 }

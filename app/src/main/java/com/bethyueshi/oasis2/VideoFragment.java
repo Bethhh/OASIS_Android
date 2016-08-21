@@ -1,7 +1,5 @@
 package com.bethyueshi.oasis2;
 
-
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
@@ -25,10 +23,6 @@ public class VideoFragment extends Fragment implements View.OnClickListener {
         instr = (GIFView)rootView.findViewById(R.id.test_pic_large);
         instr.setOnClickListener(this);
         clickable = true;
-
-        //Bundle args = getArguments();
-        //Log.d("haha", " " + args.getInt("resId"));
-        //instr.setSrc(args.getInt("resId"));
 
         GradientDrawable gd = (GradientDrawable) ((RelativeLayout)rootView.findViewById(R.id.fragment_bg)).getBackground();
         gd.setStroke(20,  Color.parseColor("#ffff00"));
@@ -57,12 +51,10 @@ public class VideoFragment extends Fragment implements View.OnClickListener {
             case R.id.test_pic_large:
                 Intent intent = new Intent(getActivity(), TestWater.class);
                 intent.putExtra("test_num", getActivity().getIntent().getIntExtra("test_num", 0));
-                Log.d("instr", "here");
                 startActivity(intent);
                 break;
             default:
                 break;
         }
-
     }
 }

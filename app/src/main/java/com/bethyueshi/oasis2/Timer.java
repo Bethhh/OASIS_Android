@@ -1,17 +1,10 @@
 package com.bethyueshi.oasis2;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.net.Uri;
-import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.support.v7.app.AppCompatActivity;
-import android.view.SoundEffectConstants;
-import android.view.View;
-import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -21,7 +14,6 @@ import android.widget.TextView;
 public class Timer {
 
     private ProgressBar barTimer;
-    //private Button btnTimer;
     private TextView textTimer;
 
     private CountDownTimer countDownTimer;
@@ -35,16 +27,14 @@ public class Timer {
     public MediaPlayer _shootMP = null;
     public MediaPlayer _shootMP2 = null;
 
-    public Timer(ProgressBar pb, TextView text, //Button btn,
-                 int num, int step, Context ctx){
+    public Timer(ProgressBar pb, TextView text, int num, int step, Context ctx){
 
         this.barTimer = pb;
         this.textTimer = text;
-        //this.btnTimer = btn;
         this.ctx = ctx;
         this.step = step;
 
-        // Add steps TODO
+        //TODO Add steps
         this.testNum = num;
         setTimer(testNum, step);
 
@@ -69,18 +59,8 @@ public class Timer {
         if (_shootMP != null)
             _shootMP.start();
 
-        //if(btnTimer != null) {
-        //    this.btnTimer.setOnClickListener(new View.OnClickListener() {
-        //@Override
-        //        public void onClick(View v) {
-        //            startTimer(wait);
-        //            btnTimer.setEnabled(false);
-        //            btnTimer.setVisibility(View.INVISIBLE);
-        //        }
-        //    });
-        //}else{
-            startTimer(wait);
-        //}
+
+        startTimer(wait);
     }
 
     public int getWaitSeconds(){
@@ -90,14 +70,14 @@ public class Timer {
     public void setTimer(int testNum, int step){//add steps TODO
         switch(testNum){
             case 0:
-                if(step == 0) wait = 0.25;
-                else wait = 1;
+                if(step == 0) wait = AppConfiguration.PH_TEST_WAIT_MIN;
+                else wait = AppConfiguration.PH_RECORD_WAIT_MIN;
 //                if(step == 0) wait = 0.1;
 //                else wait = 0.1;
                 break;
             case 1:
-                if(step == 0) wait = 0.5;
-                else wait = 2;
+                if(step == 0) wait = AppConfiguration.METAL_TEST_WAIT_MIN;
+                else wait = AppConfiguration.METAL_RECORD_WAIT_MIN;
 //                if(step == 0) wait = 0.1;
 //                else wait = 0.1;
                 break;

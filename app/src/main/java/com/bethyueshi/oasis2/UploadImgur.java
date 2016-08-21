@@ -145,7 +145,7 @@ class UploadImgur extends AsyncTask<Void, Void, Integer> {
         shootSound();
 
         Intent intent;
-        if(testNum == SelectTest.TOTAL_TEST - 1) {
+        if(testNum == AppConfiguration.TOTAL_TEST - 1) {
             intent = new Intent(ctx, FeedbackActivity.class);
         }else{
             intent = new Intent(ctx, SelectTest.class);

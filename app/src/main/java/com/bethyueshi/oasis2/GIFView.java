@@ -5,7 +5,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Movie;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 import java.io.InputStream;

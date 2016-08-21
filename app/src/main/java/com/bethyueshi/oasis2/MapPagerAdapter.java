@@ -11,8 +11,8 @@ import com.viewpagerindicator.IconPagerAdapter;
  * Created by bethyueshi on 2/23/16.
  */
 public class MapPagerAdapter extends FragmentPagerAdapter implements IconPagerAdapter {
-    public static final int NUM_OF_MAPS = 4;
 
+    // TODO use correct icons
     protected static final int[] ICONS = new int[] {
             R.drawable.perm_group_calendar,
             R.drawable.perm_group_device_alarms,
@@ -28,6 +28,7 @@ public class MapPagerAdapter extends FragmentPagerAdapter implements IconPagerAd
     public Fragment getItem(int pos) {
         Fragment fragment;
         Bundle args = new Bundle();
+        //TODO change URL to be correct urls.
         switch(pos) {
             case 1:
                 fragment = new MapFragment();
@@ -53,7 +54,7 @@ public class MapPagerAdapter extends FragmentPagerAdapter implements IconPagerAd
 
     @Override
     public int getCount() {
-        return NUM_OF_MAPS;
+        return AppConfiguration.NUM_OF_MAPS;
     }
 
     @Override
