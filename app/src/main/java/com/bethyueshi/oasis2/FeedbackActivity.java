@@ -1,19 +1,19 @@
 package com.bethyueshi.oasis2;
 
-import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.graphics.Color;
-import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 
@@ -37,10 +37,10 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.ScatterData;
 import com.github.mikephil.charting.data.ScatterDataSet;
-import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
-//import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -72,6 +72,7 @@ public class FeedbackActivity extends FragmentActivity {
     private String android_id;
     private ProgressBar progressBar;
     private String[] values = new String[2];
+    private ImageView profile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,7 +102,21 @@ public class FeedbackActivity extends FragmentActivity {
         android_id = Settings.Secure.getString(getApplicationContext().getContentResolver(),
                 Settings.Secure.ANDROID_ID);
 
+        loadImageFromStorage(AppConfiguration.profile_path);
 
+       // profile = (ImageView)findViewById(R.id.profile);
+
+        profile.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               // TODO alert dialog to confirm picture change
+               Intent intent = new Intent(FeedbackActivity.this, CameraActivity.class);
+               intent.putExtra("camera_purpose", AppConfiguration.PURPOSE_PROFILE);
+
+               intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+               startActivity(intent);
+           }
+        });
 
 
         btnBack = (Button)findViewById(R.id.button_back);
@@ -208,7 +223,26 @@ public class FeedbackActivity extends FragmentActivity {
         mChart.invalidate();
     }
 
+    private void loadImageFromStorage(String path)
+    {
+        Log.d("Profile path2: ", FeedbackActivity.this.getFilesDir().getAbsolutePath());
 
+        try {
+            InputStream inputStream = openFileInput("profile.jpg");
+            Bitmap b = BitmapFactory.decodeStream(inputStream);
+            //Log.d("BitMapW", b.getWidth() + "");
+            //Log.d("BitMapH", b.getHeight() + "");
+            Bitmap cropImg = Bitmap.createBitmap(b, 0, 0, b.getHeight(), b.getHeight());
+            profile=(ImageView)findViewById(R.id.profile);
+            profile.setImageBitmap(cropImg);
+        }
+        catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+            profile=(ImageView)findViewById(R.id.profile);
+        }
+
+    }
 
 
     private LineData generateLineData() {

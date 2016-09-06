@@ -76,7 +76,7 @@ public class MapActivity extends FragmentActivity {
                     Toast.makeText(MapActivity.this, "Location permission is required!", Toast.LENGTH_SHORT).show();
                     checkLocationPermission();
                 }
-                break;
+                return;
             }
         }
     }

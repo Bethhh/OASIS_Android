@@ -70,22 +70,32 @@ public class Timer {
     public void setTimer(int testNum, int step){//add steps TODO
         switch(testNum){
             case 0:
-                if(step == 0) wait = AppConfiguration.PH_TEST_WAIT_MIN;
-                else wait = AppConfiguration.PH_RECORD_WAIT_MIN;
-//                if(step == 0) wait = 0.1;
-//                else wait = 0.1;
+                if(step == 0)
+                    wait = AppConfiguration.PH_TEST_WAIT_MIN;
+                else
+                    wait = AppConfiguration.PH_RECORD_WAIT_MIN;
+
                 break;
             case 1:
-                if(step == 0) wait = AppConfiguration.METAL_TEST_WAIT_MIN;
-                else wait = AppConfiguration.METAL_RECORD_WAIT_MIN;
-//                if(step == 0) wait = 0.1;
-//                else wait = 0.1;
+                if(step == 0)
+                    wait = AppConfiguration.METAL_TEST_WAIT_MIN;
+                else
+                    wait = AppConfiguration.METAL_RECORD_WAIT_MIN;
+
                 break;
+
+            //TODO change them to be correct constants
             case 2:
-                wait = 0.1;
+                if(step == 0)
+                    wait = AppConfiguration.METAL_TEST_WAIT_MIN;
+                else
+                    wait = AppConfiguration.METAL_RECORD_WAIT_MIN;
                 break;
             case 3:
-                wait = 0.1;
+                if(step == 0)
+                    wait = AppConfiguration.METAL_TEST_WAIT_MIN;
+                else
+                    wait = AppConfiguration.METAL_RECORD_WAIT_MIN;
                 break;
             default:
                 wait = 1;
@@ -96,15 +106,13 @@ public class Timer {
 
     private void startTimer(final double m) {
         countDownTimer = new CountDownTimer((int)(SIXTY * m * 1000), 100) {
-            // 500 means, onTick function will be called at every 500 milliseconds
-
             @Override
             public void onTick(long leftTimeInMilliseconds) {
                 long secs = leftTimeInMilliseconds / 1000;
                 barTimer.setSecondaryProgress((int) secs);
-                // format the textview to show the easily readable format
                 textTimer.setText(String.format("%02d", secs / SIXTY) + ":" +
                         String.format("%02d", secs % SIXTY));
+                // Countdown last 10 seconds
                 if(step == 1){
                     if(secs <= 10 && _shootMP2 != null){
                         _shootMP2.start();
@@ -116,14 +124,17 @@ public class Timer {
             public void onFinish() {
                 if(textTimer.getText().equals("00:00")){
                     if(step == 1) {
-                        _shootMP.stop();
-                        _shootMP.release();
+                        if (_shootMP != null) {
+                            _shootMP.stop();
+                            _shootMP.release();
 
-                        _shootMP2.stop();
-                        _shootMP2.release();
+                            _shootMP2.stop();
+                            _shootMP2.release();
+                        }
 
                         Intent intent = new Intent(ctx, CameraActivity.class);
                         intent.putExtra("test_num", testNum);
+                        intent.putExtra("camera_purpose", AppConfiguration.PURPOSE_TEST);
 
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         ctx.startActivity(intent);

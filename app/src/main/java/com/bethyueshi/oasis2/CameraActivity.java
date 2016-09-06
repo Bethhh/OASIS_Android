@@ -7,21 +7,21 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.media.AudioManager;
-import android.media.MediaActionSound;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -43,6 +43,8 @@ public class CameraActivity extends Activity {
 
     private MediaPlayer _shootMP=null;
     private ImageButton capture;
+    private int purpose;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,15 +52,20 @@ public class CameraActivity extends Activity {
         setContentView(R.layout.activity_camera);
 
         capture = (ImageButton) findViewById(R.id.image_capture);
+        purpose = getIntent().getIntExtra("camera_purpose", AppConfiguration.PURPOSE_TEST);
 
         initializeCamera();
-
 
         // Add a listener to the Capture button
         capture.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if(purpose == AppConfiguration.PURPOSE_PROFILE){
+                            mCamera.takePicture(null, null, mPicture2);
+                            return;
+                        }
+
                         mCamera.autoFocus(new Camera.AutoFocusCallback() {
                             @Override
                             public void onAutoFocus(boolean success, Camera camera) {
@@ -91,10 +98,6 @@ public class CameraActivity extends Activity {
 
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         progressBar.setVisibility(View.INVISIBLE);
-
-        android_id = Settings.Secure.getString(getApplicationContext().getContentResolver(),
-                Settings.Secure.ANDROID_ID);
-
     }
 
     private Camera.PictureCallback mPicture = new Camera.PictureCallback() {
@@ -105,6 +108,46 @@ public class CameraActivity extends Activity {
             upload(data);
         }
     };
+
+    private Camera.PictureCallback mPicture2 = new Camera.PictureCallback() {
+
+        @Override
+        public void onPictureTaken(byte[] data, Camera camera) {
+            shootSound();
+            saveToInternalStorage(data);
+
+            Intent intent = new Intent(CameraActivity.this, FeedbackActivity.class);
+
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
+    };
+
+    private String saveToInternalStorage(byte[] img){
+
+        File photo = new File(CameraActivity.this.getFilesDir().getAbsolutePath(),"profile.jpg");
+
+        if (photo.exists()) {
+            Log.d("Save", "FILE EXISTS");
+            photo.delete();
+        }
+
+        FileOutputStream fos;
+
+        try {
+            fos = openFileOutput("profile.jpg", Context.MODE_PRIVATE);
+
+            fos.write(img);
+            fos.close();
+        }
+        catch (java.io.IOException e) {
+            Log.e("Save picture", "Exception in photoCallback", e);
+        }
+
+        Log.d("Profile path: ", CameraActivity.this.getFilesDir().getAbsolutePath());
+        return CameraActivity.this.getFilesDir().getAbsolutePath();
+    }
+
 
     public void shootSound()
     {
@@ -127,35 +170,17 @@ public class CameraActivity extends Activity {
 
         int testNum = getIntent().getIntExtra("test_num", 0);
 
-//        Intent intent;
-//        if(testNum == SelectTest.TOTAL_TEST - 1) {
-//            //TODO: handle wait for the last upload.
-//            intent = new Intent(CameraActivity.this, FeedbackActivity.class);
-//            //intent.putExtra("test_num", getIntent().getIntExtra("test_num", 0));
-//        }else{
-//            intent = new Intent(CameraActivity.this, SelectTest.class);
-//            intent.putExtra("test_num", getIntent().getIntExtra("test_num", 0) + 1);
-//        }
-
-        //intent.putExtra("lat", latitude);
-        //intent.putExtra("lng", longitude);
-        //intent.putExtra("ts", timeStamp);
-        //intent.putExtra("img", encodedImage);
-
         new UploadImgur(progressBar, encodedImage,
-                        latitude, longitude, timeStamp,
-                        android_id, testNum, CameraActivity.this).execute();
-
-        //startActivity(intent);
+                        latitude, longitude, timeStamp, testNum, CameraActivity.this).execute();
     }
 
     /** Check if this device has a camera TODO maybe we need to call this*/
     private boolean checkCameraHardware(Context context) {
         if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)){
-            // this device has a camera
+            // This device has a camera
             return true;
         } else {
-            // no camera on this device
+            // No camera on this device
             return false;
         }
     }
@@ -168,48 +193,30 @@ public class CameraActivity extends Activity {
         try {
             mCamera = Camera.open(); // attempt to get a Camera instance TODO check front/back camera
             if (mCamera == null)
-                Log.d(TAG, "Camerad is null" + num + "hello");
+                Log.d(TAG, "Camerad is null" + num);
 
         } catch (Exception e) {
             // Camera is not available (in use or does not exist)
             Log.d(TAG, "Error getting camera: " + e.getMessage());
             e.printStackTrace();
-            Log.d(TAG, "" + num + "hello");
         }
 
         // Create our Preview view and set it as the content of our activity.
-        mPreview = new CameraPreview(this, mCamera, capture);
+        mPreview = new CameraPreview(this, mCamera, capture, purpose);
         FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview);
         preview.addView(mPreview);
     }
 
     private void initializeCamera() {
-        // Here, thisActivity is the current activity
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
 
-            // Should we show an explanation?
-            //if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-            //       Manifest.permission.CAMERA)) {
-
-            // Show an expanation to the user *asynchronously* -- don't block
-            // this thread waiting for the user's response! After the user
-            // sees the explanation, try again to request the permission.
-
-            //} else {
-            Log.d(TAG, "no permission request");
-
-            // No explanation needed, we can request the permission.
+            Log.d(TAG, "Requesting Camera Permission");
 
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.CAMERA},
                     MY_PERMISSIONS_REQUEST_CAMERA);
-
-            // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-            // app-defined int constant. The callback method gets the
-            // result of the request.
-            //}
         }else{
             getCameraInstance();
         }
@@ -233,7 +240,7 @@ public class CameraActivity extends Activity {
 
         // Get the Camera instance as the activity achieves full user focus
         if (mCamera == null) {
-            getCameraInstance(); // Local method to handle camera init
+            getCameraInstance();
         }
     }
 
@@ -256,26 +263,22 @@ public class CameraActivity extends Activity {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
+                    Log.d(TAG, "Camera permission is granted");
                     // Create an instance of Camere
                     getCameraInstance();
-                    Log.d(TAG, "try camera done");
+
                     if(mCamera == null){
-                        Log.d(TAG, "Camerddddda is null");
+                        Log.d(TAG, "Camera is null in requesting permission");
                     }
 
                 } else {
-                    //TODO
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
+                    Log.d(TAG, "Camera permission is denied");
+                    Toast.makeText(CameraActivity.this, "Camera permission is required!", Toast.LENGTH_SHORT).show();
+                    initializeCamera();
                 }
-                Log.d(TAG, "get permission");
                 return;
             }
 
-            // other 'case' lines to check for other
-            // permissions this app might request
         }
     }
 }

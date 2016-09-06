@@ -4,26 +4,26 @@ package com.bethyueshi.oasis2;
  * Created by bethyueshi on 6/21/15.
  */
 
+import android.app.Application;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.widget.Button;
 import android.widget.ImageButton;
 
 import java.io.IOException;
 import java.util.List;
 
-/** A basic Camera preview class */
 public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
     private SurfaceHolder mHolder;
     private Camera mCamera;
     private static final String TAG = "CameraPreview";
     private ImageButton shutter;
+    private int purpose;
 
-    public CameraPreview(Context context, Camera camera, ImageButton shutter) {
+    public CameraPreview(Context context, Camera camera, ImageButton shutter, int purpose) {
         super(context);
         mCamera = camera;
         if(mCamera == null)
@@ -36,6 +36,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         // deprecated setting, but required on Android versions prior to 3.0
         mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
         this.shutter = shutter;
+        this.purpose = purpose;
     }
 
     public void surfaceCreated(SurfaceHolder holder) {
@@ -96,7 +97,9 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
         if(mCamera != null) {
             setPreviewProperties();
-            shutter.performClick();
+            if(purpose == AppConfiguration.PURPOSE_TEST) {
+                shutter.performClick();
+            }
         }
     }
 

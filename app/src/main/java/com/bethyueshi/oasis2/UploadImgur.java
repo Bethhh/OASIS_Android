@@ -34,37 +34,22 @@ class UploadImgur extends AsyncTask<Void, Void, Integer> {
     private static final String TAG = "UploadImgur";
     private static final String API_KEY =  "271a72b8dd082c6"; //Imgur client ID
 
-    public static final String STR_SUBMIT_TO = "http://52.53.177.54/";
-    public static final String STR_PHP = ".php";
-    public static final String STR_PUT = "put";
-    public static final String STR_GET = "get";
-
-    public static final String STR_PH = "ph";
-    public static final String STR_PHOTO = "photo";
-    public static final String STR_GEO = "geo";
-    public static final String STR_LAT = "lat";
-    public static final String STR_LONG = "long";
-
-
-
     private ProgressBar progressBar;
     private String encodedImage;
     private double latitude;
     private double longitude;
     private String timestamp;
-    private String aid;
     private int testNum;
     private Context ctx;
     private MediaPlayer _shootMP=null;
 
     public UploadImgur(ProgressBar pb, String data, double lat, double lng,
-                       String ts, String a_id, int test_num, Context context){
+                       String ts, int test_num, Context context){
         this.progressBar = pb;
         this.encodedImage = data;
         this.latitude = lat;
         this.longitude = lng;
         this.timestamp = ts;
-        this.aid = a_id;
         this.testNum = test_num;
         this.ctx = context.getApplicationContext();
     }
@@ -77,7 +62,7 @@ class UploadImgur extends AsyncTask<Void, Void, Integer> {
     @Override
     protected Integer doInBackground(Void... params){
 
-        Integer status;
+        //Integer status;
         String ret = "";
 
         final String upload_to = "https://api.imgur.com/3/upload.json";
@@ -158,11 +143,11 @@ class UploadImgur extends AsyncTask<Void, Void, Integer> {
 
     private String genPostUrl(String androidId, String item, String val, String opt){
 
-        String add =  STR_SUBMIT_TO + STR_PUT + item + STR_PHP;
-        if(item == STR_GEO){
+        String add =  AppConfiguration.STR_SUBMIT_TO + AppConfiguration.STR_PUT + item + AppConfiguration.STR_PHP;
+        if(item == AppConfiguration.STR_GEO){
             return add + "?" + "id='" + androidId +
-                               "'&" + STR_LAT + "=" + val + "&" + STR_LONG + "=" + opt;
-        }else if (item == STR_PHOTO) {
+                               "'&" + AppConfiguration.STR_LAT + "=" + val + "&" + AppConfiguration.STR_LONG + "=" + opt;
+        }else if (item == AppConfiguration.STR_PHOTO) {
             return add + "?" + "id='" + androidId + "'&" + item + "='" + val + "'";
         }else {
             return add + "?" + "id=" + androidId + "&" + item + "=" + val; // TODO update ph id in database
@@ -176,9 +161,9 @@ class UploadImgur extends AsyncTask<Void, Void, Integer> {
             String android_id = Secure.getString(ctx.getContentResolver(), Secure.ANDROID_ID);
             Log.d("Android","Android ID : "+android_id);
 
-            String postURL_ph = genPostUrl(android_id, STR_PH, String.valueOf(8.8), null);
-            String postURL_photo = genPostUrl(android_id, STR_PHOTO, url, null);
-            String postURL_geo = genPostUrl(android_id, STR_GEO, String.valueOf(latitude),
+            String postURL_ph = genPostUrl(android_id, AppConfiguration.STR_PH, String.valueOf(8.8), null);
+            String postURL_photo = genPostUrl(android_id, AppConfiguration.STR_PHOTO, url, null);
+            String postURL_geo = genPostUrl(android_id, AppConfiguration.STR_GEO, String.valueOf(latitude),
                                                                  String.valueOf(longitude));
 
             Log.d(TAG, postURL_ph);

@@ -33,19 +33,6 @@ class UploadValue extends AsyncTask<Void, Void, Integer> {
 
     private static final String TAG = "UploadValue";
 
-    public static final String STR_SUBMIT_TO = "http://52.53.177.54/";
-    public static final String STR_PHP = ".php";
-    public static final String STR_PUT = "put";
-    public static final String STR_GET = "get";
-
-    public static final String STR_PH = "ph";
-    public static final String STR_PHOTO = "photo";
-    public static final String STR_GEO = "geo";
-    public static final String STR_METAL = "metals";
-    public static final String STR_LAT = "lat";
-    public static final String STR_LONG = "long";
-
-
     private ProgressBar progressBar;
 
     private double latitude;
@@ -87,11 +74,11 @@ class UploadValue extends AsyncTask<Void, Void, Integer> {
 
     private String genPostUrl(String androidId, String item, String val, String opt){
 
-        String add =  STR_SUBMIT_TO + STR_PUT + item + STR_PHP;
-        if(item == STR_GEO){
+        String add =  AppConfiguration.STR_SUBMIT_TO + AppConfiguration.STR_PUT + item + AppConfiguration.STR_PHP;
+        if(item == AppConfiguration.STR_GEO){
             return add + "?" + "id='" + androidId +
-                    "'&" + STR_LAT + "=" + val + "&" + STR_LONG + "=" + opt;
-        }else if (item == STR_PHOTO) {
+                    "'&" + AppConfiguration.STR_LAT + "=" + val + "&" + AppConfiguration.STR_LONG + "=" + opt;
+        }else if (item == AppConfiguration.STR_PHOTO) {
             return add + "?" + "id='" + androidId + "'&" + item + "='" + val + "'";
         }else {
             return add + "?" + "id=" + androidId + "&" + item + "=" + val; // TODO update ph id in database
@@ -105,9 +92,9 @@ class UploadValue extends AsyncTask<Void, Void, Integer> {
             String android_id = Secure.getString(ctx.getContentResolver(), Secure.ANDROID_ID);
             Log.d("Android","Android ID : "+android_id);
 
-            String postURL_ph = genPostUrl(android_id, STR_PH, String.valueOf(values[0]), null);
-            String postURL_metal = genPostUrl(android_id, STR_METAL, String.valueOf(values[1]), null);
-            String postURL_geo = genPostUrl(android_id, STR_GEO, String.valueOf(latitude),
+            String postURL_ph = genPostUrl(android_id, AppConfiguration.STR_PH, String.valueOf(values[0]), null);
+            String postURL_metal = genPostUrl(android_id, AppConfiguration.STR_METAL, String.valueOf(values[1]), null);
+            String postURL_geo = genPostUrl(android_id, AppConfiguration.STR_GEO, String.valueOf(latitude),
                     String.valueOf(longitude));
 
             Log.d(TAG, postURL_ph);
